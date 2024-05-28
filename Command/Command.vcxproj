@@ -130,7 +130,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Assets\src\Command.cpp" />
+    <ClCompile Include="Assets\src\InputHandler.cpp" />
+    <ClCompile Include="CommandMain.cpp" />
+    <ClCompile Include="FireCommand.cpp" />
+    <ClCompile Include="GameActor.cpp" />
+    <ClCompile Include="JumpCommand.cpp" />
+    <ClCompile Include="LurchCommand.cpp" />
+    <ClCompile Include="SwapCommand.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Assets\src\Command.h" />
+    <ClInclude Include="Assets\src\InputHandler.h" />
+    <ClInclude Include="FireCommand.h" />
+    <ClInclude Include="GameActor.h" />
+    <ClInclude Include="JumpCommand.h" />
+    <ClInclude Include="LurchCommand.h" />
+    <ClInclude Include="SwapCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
