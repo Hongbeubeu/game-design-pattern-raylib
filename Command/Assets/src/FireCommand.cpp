@@ -4,7 +4,6 @@ namespace CommandPattern
 {
 	void FireCommand::Execute()
 	{
-		// actor.Fire();
 	}
 }
 

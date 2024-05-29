@@ -4,7 +4,6 @@ namespace CommandPattern
 {
 	void SwapCommand::Execute()
 	{
-		// actor.Swap();
 	}
 }
 

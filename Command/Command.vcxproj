@@ -130,7 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\src\Command.cpp" />
     <ClCompile Include="Assets\src\FireCommand.cpp" />
     <ClCompile Include="Assets\src\GameActor.cpp" />
     <ClCompile Include="Assets\src\InputHandler.cpp" />
@@ -150,6 +149,7 @@
     <ClInclude Include="Assets\src\LurchCommand.h" />
     <ClInclude Include="Assets\src\MoveUnitCommand.h" />
     <ClInclude Include="Assets\src\SwapCommand.h" />
+    <ClInclude Include="Assets\src\UndoableCommand.h" />
     <ClInclude Include="Assets\src\Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

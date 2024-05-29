@@ -2,9 +2,11 @@
 
 #include "raylib.h"
 
-void Unit::MoveTo(const int x, const int y) const
+void Unit::MoveTo(const int xValue, const int yValue)
 {
-	TraceLog(LOG_INFO, "Unit moved to %d, %d", x, y);
+	this->x = xValue;
+	this->y = yValue;
+	TraceLog(LOG_INFO, "Unit moved to %d, %d", xValue, yValue);
 }
 
 int Unit::X() const
@@ -16,10 +18,4 @@ int Unit::Y() const
 {
 	return y;
 }
-
-void Unit::SetY(const int destY)
-{
-	y = destY;
-}
-
 

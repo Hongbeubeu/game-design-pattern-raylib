@@ -4,7 +4,6 @@ namespace CommandPattern
 {
 	void JumpCommand::Execute()
 	{
-		// actor.Jump();
 	}
 }
 

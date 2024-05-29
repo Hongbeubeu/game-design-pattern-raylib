@@ -1,5 +1,4 @@
 #pragma once
-#include "GameActor.h"
 
 namespace CommandPattern
 {

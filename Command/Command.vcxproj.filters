@@ -27,9 +27,6 @@
     <ClCompile Include="Assets\src\InputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\src\Command.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Assets\src\MoveUnitCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -79,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Assets\src\Unit.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\UndoableCommand.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
