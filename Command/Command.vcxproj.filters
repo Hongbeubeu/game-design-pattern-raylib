@@ -48,6 +48,9 @@
     <ClCompile Include="Assets\src\GameActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\src\Unit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\src\InputHandler.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="Assets\src\GameActor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\Unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

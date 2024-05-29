@@ -138,6 +138,7 @@
     <ClCompile Include="Assets\src\LurchCommand.cpp" />
     <ClCompile Include="Assets\src\MoveUnitCommand.cpp" />
     <ClCompile Include="Assets\src\SwapCommand.cpp" />
+    <ClCompile Include="Assets\src\Unit.cpp" />
     <ClCompile Include="CommandMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Assets\src\LurchCommand.h" />
     <ClInclude Include="Assets\src\MoveUnitCommand.h" />
     <ClInclude Include="Assets\src\SwapCommand.h" />
+    <ClInclude Include="Assets\src\Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

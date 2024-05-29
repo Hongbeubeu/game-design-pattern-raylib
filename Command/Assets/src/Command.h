@@ -7,7 +7,7 @@ namespace CommandPattern
 	{
 	public:
 		virtual ~Command() = default;
-		virtual void Execute(GameActor& actor) = 0;
+		virtual void Execute() = 0;
 	};
 }
 

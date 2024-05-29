@@ -1,10 +1,10 @@
 #include "JumpCommand.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
-	void JumpCommand::Execute(GameActor& actor)
+	void JumpCommand::Execute()
 	{
-		actor.Jump();
+		// actor.Jump();
 	}
 }
 

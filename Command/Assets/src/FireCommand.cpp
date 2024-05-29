@@ -1,10 +1,10 @@
 #include "FireCommand.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
-	void FireCommand::Execute(GameActor& actor)
+	void FireCommand::Execute()
 	{
-		actor.Fire();
+		// actor.Fire();
 	}
 }
 

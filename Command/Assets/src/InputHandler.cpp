@@ -5,6 +5,8 @@
 #include "LurchCommand.h"
 #include "SwapCommand.h"
 #include "JumpCommand.h"
+#include "MoveUnitCommand.h"
+#include "Unit.h"
 
 using namespace CommandPattern;
 
@@ -19,6 +21,7 @@ void InputHandler::ClearReferenceCommand() const
 	delete buttonY;
 	delete buttonA;
 	delete buttonB;
+	delete unit;
 }
 
 void InputHandler::InitInput()
@@ -28,6 +31,7 @@ void InputHandler::InitInput()
 	buttonY = new LurchCommand();
 	buttonA = new JumpCommand();
 	buttonB = new FireCommand();
+	unit = new Unit();
 }
 
 Command* InputHandler::HandleInput() const
@@ -49,5 +53,18 @@ Command* InputHandler::HandleInput() const
 		return buttonB;
 	}
 
+	if (IsKeyPressed(KEY_W))
+	{
+		const int destY = unit->Y() + 1;
+		unit->SetY(destY);
+		return new MoveUnitCommand(unit, unit->X(), destY);
+	}
+
+	if (IsKeyPressed(KEY_S))
+	{
+		const int destY = unit->Y() - 1;
+		unit->SetY(destY);
+		return new MoveUnitCommand(unit, unit->X(), destY);
+	}
 	return nullptr;
 }

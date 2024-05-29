@@ -1,9 +1,9 @@
 #include "LurchCommand.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
-	void LurchCommand::Execute(GameActor& actor)
+	void LurchCommand::Execute()
 	{
-		actor.Lurch();
+		// actor.Lurch();
 	}
 }

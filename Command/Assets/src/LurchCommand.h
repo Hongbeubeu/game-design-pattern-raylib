@@ -1,12 +1,12 @@
 #pragma once
 #include "Command.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
 	class LurchCommand :public Command
 	{
 	public:
-		virtual void Execute(GameActor& actor);
+		virtual void Execute();
 	};
 
 }

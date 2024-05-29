@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+#include "Unit.h"
 using namespace CommandPattern;
 
 class InputHandler
@@ -14,6 +15,7 @@ private:
 	Command* buttonY = nullptr;
 	Command* buttonA = nullptr;
 	Command* buttonB = nullptr;
+	Unit* unit = nullptr;
 
 	void ClearReferenceCommand() const;
 };

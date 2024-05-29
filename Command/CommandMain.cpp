@@ -10,33 +10,20 @@ int main(void)
 
 	InputHandler inputHandler;
 	inputHandler.InitInput();
-	const std::string name = "hong";
-	auto actor = GameActor(name);
-	const std::string name2 = "phuong";
-	auto actor2 = GameActor(name2);
-	std::vector<GameActor> actors;
-	actors.push_back(actor);
-	actors.push_back(actor2);
-
-	Transform trans;
-
+	Command* command = nullptr;
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(RAYWHITE);
-		Command* command = inputHandler.HandleInput();
+		command = inputHandler.HandleInput();
 		if (command)
 		{
-			for (GameActor a : actors)
-			{
-				command->Execute(a);
-			}
+			command->Execute();
 		}
-
 		DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 		EndDrawing();
 	}
-
+	delete command;
 	CloseWindow();
 
 	return 0;

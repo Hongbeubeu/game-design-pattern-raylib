@@ -1,10 +1,10 @@
 #include "SwapCommand.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
-	void SwapCommand::Execute(GameActor& actor)
+	void SwapCommand::Execute()
 	{
-		actor.Swap();
+		// actor.Swap();
 	}
 }
 
