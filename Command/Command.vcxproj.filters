@@ -30,19 +30,22 @@
     <ClCompile Include="Assets\src\Command.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="FireCommand.cpp">
+    <ClCompile Include="Assets\src\MoveUnitCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="JumpCommand.cpp">
+    <ClCompile Include="Assets\src\FireCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="LurchCommand.cpp">
+    <ClCompile Include="Assets\src\JumpCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="SwapCommand.cpp">
+    <ClCompile Include="Assets\src\LurchCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="GameActor.cpp">
+    <ClCompile Include="Assets\src\SwapCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\src\GameActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,19 +56,22 @@
     <ClInclude Include="Assets\src\Command.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="FireCommand.h">
+    <ClInclude Include="Assets\src\MoveUnitCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="JumpCommand.h">
+    <ClInclude Include="Assets\src\FireCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="LurchCommand.h">
+    <ClInclude Include="Assets\src\JumpCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="SwapCommand.h">
+    <ClInclude Include="Assets\src\LurchCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="GameActor.h">
+    <ClInclude Include="Assets\src\SwapCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\GameActor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

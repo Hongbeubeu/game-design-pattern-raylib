@@ -6,7 +6,7 @@
 #include "SwapCommand.h"
 #include "JumpCommand.h"
 
-using namespace command_pattern;
+using namespace CommandPattern;
 
 InputHandler::~InputHandler()
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "Command.h"
-using namespace command_pattern;
+using namespace CommandPattern;
 
 class InputHandler
 {

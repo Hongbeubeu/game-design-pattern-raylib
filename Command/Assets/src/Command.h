@@ -1,7 +1,7 @@
 #pragma once
 #include "GameActor.h"
 
-namespace command_pattern
+namespace CommandPattern
 {
 	class Command
 	{
