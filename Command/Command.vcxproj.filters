@@ -77,8 +77,5 @@
     <ClInclude Include="Assets\src\Unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\src\UndoableCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -22,8 +22,53 @@ void InputHandler::ClearReferenceCommand() const
 	delete buttonA;
 	delete buttonB;
 	delete moveUnitCommand;
-	delete lastMoveUnitCommand;
+	delete commandHistory;
 	delete unit;
+}
+
+void InputHandler::RemoveToEndHistory() const
+{
+	if (currentCommand == nullptr || commandHistory == nullptr || commandHistory->empty())
+	{
+		return;
+	}
+
+	auto it = std::find(commandHistory->begin(), commandHistory->end(), currentCommand);
+	if (it == commandHistory->end())
+	{
+		return;
+	}
+	it = (it + 1);
+	if (it != commandHistory->end())
+	{
+		commandHistory->erase(it, commandHistory->end());
+	}
+}
+
+int InputHandler::GetIndexOfCurrentCommand() const
+{
+	if (commandHistory->empty() || currentCommand == nullptr)
+	{
+		return -1;
+	}
+
+	const auto it = std::find(commandHistory->begin(), commandHistory->end(), currentCommand);
+	if (it != commandHistory->end())
+	{
+		return static_cast<int>(it - commandHistory->begin());
+	}
+
+	return -1;
+}
+
+MoveUnitCommand* InputHandler::GetCommandFromHistory(const int index) const
+{
+	if (index < 0 || index >= static_cast<int>(commandHistory->size()))
+	{
+		return nullptr;
+	}
+
+	return commandHistory->at(index);
 }
 
 void InputHandler::InitInput()
@@ -35,6 +80,7 @@ void InputHandler::InitInput()
 	buttonB = new FireCommand();
 	unit = new Unit();
 	moveUnitCommand = new MoveUnitCommand(unit, 0, 0);
+	commandHistory = new std::vector<MoveUnitCommand*>();
 }
 
 Command* InputHandler::HandleInput()
@@ -56,43 +102,68 @@ Command* InputHandler::HandleInput()
 		return buttonB;
 	}
 
-	if (IsKeyPressed(KEY_W))
+	MoveUnitCommand* returnCommand = nullptr;
+
+	int destX = unit->X();
+	int destY = unit->Y();
+
+	const auto keyPressed = GetKeyPressed();
+
+	switch (keyPressed)
 	{
-		const int destY = unit->Y() + 1;
-		moveUnitCommand->SetPosition(unit->X(), destY);
-		lastMoveUnitCommand = moveUnitCommand;
-		return moveUnitCommand;
+	case KEY_W:
+		destY += 1;
+		break;
+	case KEY_A:
+		destX -= 1;
+		break;
+	case KEY_S:
+		destY -= 1;
+		break;
+	case KEY_D:
+		destX += 1;
+		break;
+	default:
+		break;
 	}
 
-	if (IsKeyPressed(KEY_A))
+	if (destX != unit->X() || destY != unit->Y())
 	{
-		const int destX = unit->X() - 1;
-		moveUnitCommand->SetPosition(destX, unit->Y());
-		lastMoveUnitCommand = moveUnitCommand;
-		return moveUnitCommand;
+		returnCommand = new MoveUnitCommand(unit, destX, destY);
 	}
 
-	if (IsKeyPressed(KEY_S))
+	if (returnCommand)
 	{
-		const int destY = unit->Y() - 1;
-		moveUnitCommand->SetPosition(unit->X(), destY);
-		lastMoveUnitCommand = moveUnitCommand;
-		return moveUnitCommand;
+		RemoveToEndHistory();
+		commandHistory->push_back(returnCommand);
+		if (commandHistory->size() > historyCapacity)
+		{
+			commandHistory->erase(commandHistory->begin());
+		}
+		currentCommand = returnCommand;
 	}
 
-	if (IsKeyPressed(KEY_D))
+	if (!(commandHistory->empty()) && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z))
 	{
-		const int destX = unit->X() + 1;
-		moveUnitCommand->SetPosition(destX, unit->Y());
-		lastMoveUnitCommand = moveUnitCommand;
-		return moveUnitCommand;
+		const auto index = GetIndexOfCurrentCommand();
+		if (index > 0)
+		{
+			const auto undoCommand = GetCommandFromHistory(index - 1);
+			currentCommand = undoCommand;
+			returnCommand = undoCommand;
+		}
 	}
 
-	if (lastMoveUnitCommand && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z))
+	if (!(commandHistory->empty()) && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_R))
 	{
-		lastMoveUnitCommand->Undo();
-		lastMoveUnitCommand = nullptr;
+		const auto index = GetIndexOfCurrentCommand();
+		if (index >= 0 && index < static_cast<int>(commandHistory->size()) - 1)
+		{
+			const auto redoCommand = GetCommandFromHistory(index + 1);
+			currentCommand = redoCommand;
+			returnCommand = redoCommand;
+		}
 	}
 
-	return nullptr;
+	return returnCommand;
 }
