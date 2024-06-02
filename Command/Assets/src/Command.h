@@ -10,6 +10,7 @@ namespace CommandPattern
 		virtual ~Command() = default;
 		virtual void Execute() = 0;
 		virtual void Undo() = 0;
+		virtual void Reset() = 0;
 		virtual void DrawInfo(const Color color) = 0;
 	};
 }

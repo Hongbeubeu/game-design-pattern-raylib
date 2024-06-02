@@ -6,15 +6,14 @@
 
 using namespace CommandPattern;
 
-void InputHandler::InitInput(std::shared_ptr<Unit> unit, std::unique_ptr<CommandManager> manager)
+void InputHandler::InitInput(std::shared_ptr<Unit> unit)
 {
 	this->handledUnit = std::move(unit);
-	this->commandManager = std::move(manager);
 }
 
 void InputHandler::HandleInput()
 {
-	commandManager->DrawInfo();
+	commandManager.DrawInfo();
 	int destX = handledUnit->X();
 	int destY = handledUnit->Y();
 
@@ -40,16 +39,18 @@ void InputHandler::HandleInput()
 
 	if (destX != handledUnit->X() || destY != handledUnit->Y())
 	{
-		commandManager->ExecuteCommand(std::make_unique<MoveUnitCommand>(handledUnit, destX, destY));
+		auto cmd = commandManager.CreateCommand<MoveUnitCommand>();
+		cmd->Init(handledUnit, destX, destY);
+		commandManager.ExecuteCommand<MoveUnitCommand>(std::move(cmd));
 	}
 
 	if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z))
 	{
-		commandManager->Undo();
+		commandManager.Undo();
 	}
 
 	if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_R))
 	{
-		commandManager->Redo();
+		commandManager.Redo();
 	}
 }

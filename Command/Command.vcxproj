@@ -139,8 +139,11 @@
   <ItemGroup>
     <ClInclude Include="Assets\src\Command.h" />
     <ClInclude Include="Assets\src\CommandManager.h" />
+    <ClInclude Include="Assets\src\CommandPool.h" />
+    <ClInclude Include="Assets\src\CommandPoolBase.h" />
     <ClInclude Include="Assets\src\InputHandler.h" />
     <ClInclude Include="Assets\src\MoveUnitCommand.h" />
+    <ClInclude Include="Assets\src\UnifiedCommandPool.h" />
     <ClInclude Include="Assets\src\Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

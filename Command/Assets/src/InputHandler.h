@@ -9,11 +9,11 @@ class InputHandler
 {
 public:
 	~InputHandler() = default;
-	void InitInput(std::shared_ptr<Unit> unit, std::unique_ptr<CommandManager> manager);
+	void InitInput(std::shared_ptr<Unit> unit);
 	void HandleInput();
 
 private:
 	std::shared_ptr<Unit> handledUnit = nullptr;
-	std::unique_ptr<CommandManager> commandManager = nullptr;
+	CommandManager commandManager = CommandManager(20);
 };
 

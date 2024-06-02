@@ -24,8 +24,7 @@ int main(void)
 
 	InputHandler inputHandler;
 	const auto unit = std::make_shared<Unit>();
-	auto manager = std::make_unique<CommandManager>();
-	inputHandler.InitInput(unit, std::move(manager));
+	inputHandler.InitInput(unit);
 
 	// Main game loop
 	while (!WindowShouldClose())

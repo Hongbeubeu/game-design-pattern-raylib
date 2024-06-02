@@ -3,13 +3,6 @@
 #include "MoveUnitCommand.h"
 #include "raylib.h"
 
-void CommandManager::ExecuteCommand(std::unique_ptr<CommandPattern::Command> command)
-{
-	command->Execute();
-	history.push_back(std::move(command));
-	redoStack.clear();
-}
-
 void CommandManager::Undo()
 {
 	if (!history.empty())

@@ -53,5 +53,14 @@
     <ClInclude Include="Assets\src\CommandManager.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\src\UnifiedCommandPool.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\CommandPoolBase.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\CommandPool.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
