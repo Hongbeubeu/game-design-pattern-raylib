@@ -1,5 +1,8 @@
 #include "CommandManager.h"
 
+#include "MoveUnitCommand.h"
+#include "raylib.h"
+
 void CommandManager::ExecuteCommand(std::unique_ptr<CommandPattern::Command> command)
 {
 	command->Execute();

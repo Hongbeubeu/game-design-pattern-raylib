@@ -8,12 +8,12 @@ using namespace CommandPattern;
 class InputHandler
 {
 public:
-	~InputHandler();
-	void InitInput();
+	~InputHandler() = default;
+	void InitInput(std::shared_ptr<Unit> unit, std::unique_ptr<CommandManager> manager);
 	void HandleInput();
 
 private:
-	Unit* unit = nullptr;
-	CommandManager* commandManager = nullptr;
+	std::shared_ptr<Unit> handledUnit = nullptr;
+	std::unique_ptr<CommandManager> commandManager = nullptr;
 };
 

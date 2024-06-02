@@ -6,47 +6,41 @@
 
 using namespace CommandPattern;
 
-InputHandler::~InputHandler()
+void InputHandler::InitInput(std::shared_ptr<Unit> unit, std::unique_ptr<CommandManager> manager)
 {
-	delete unit;
-	delete commandManager;
+	this->handledUnit = std::move(unit);
+	this->commandManager = std::move(manager);
 }
 
-void InputHandler::InitInput()
-{
-	unit = new Unit();
-	commandManager = new CommandManager();
-}
 void InputHandler::HandleInput()
 {
-	int destX = unit->X();
-	int destY = unit->Y();
+	int destX = handledUnit->X();
+	int destY = handledUnit->Y();
 
 	const auto keyPressed = GetKeyPressed();
 
 	switch (keyPressed)
 	{
 	case KEY_W:
-		destY += 1;
+		destY -= 32;
 		break;
 	case KEY_A:
-		destX -= 1;
+		destX -= 32;
 		break;
 	case KEY_S:
-		destY -= 1;
+		destY += 32;
 		break;
 	case KEY_D:
-		destX += 1;
+		destX += 32;
 		break;
 	default:
 		break;
 	}
 
-	if (destX != unit->X() || destY != unit->Y())
+	if (destX != handledUnit->X() || destY != handledUnit->Y())
 	{
-		commandManager->ExecuteCommand(std::make_unique<MoveUnitCommand>(unit, destX, destY));
+		commandManager->ExecuteCommand(std::make_unique<MoveUnitCommand>(handledUnit, destX, destY));
 	}
-
 
 	if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z))
 	{
