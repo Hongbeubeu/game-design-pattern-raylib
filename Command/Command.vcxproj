@@ -130,25 +130,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\src\FireCommand.cpp" />
-    <ClCompile Include="Assets\src\GameActor.cpp" />
+    <ClCompile Include="Assets\src\CommandManager.cpp" />
     <ClCompile Include="Assets\src\InputHandler.cpp" />
-    <ClCompile Include="Assets\src\JumpCommand.cpp" />
-    <ClCompile Include="Assets\src\LurchCommand.cpp" />
     <ClCompile Include="Assets\src\MoveUnitCommand.cpp" />
-    <ClCompile Include="Assets\src\SwapCommand.cpp" />
     <ClCompile Include="Assets\src\Unit.cpp" />
     <ClCompile Include="CommandMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\src\Command.h" />
-    <ClInclude Include="Assets\src\FireCommand.h" />
-    <ClInclude Include="Assets\src\GameActor.h" />
+    <ClInclude Include="Assets\src\CommandManager.h" />
     <ClInclude Include="Assets\src\InputHandler.h" />
-    <ClInclude Include="Assets\src\JumpCommand.h" />
-    <ClInclude Include="Assets\src\LurchCommand.h" />
     <ClInclude Include="Assets\src\MoveUnitCommand.h" />
-    <ClInclude Include="Assets\src\SwapCommand.h" />
     <ClInclude Include="Assets\src\Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -30,23 +30,11 @@
     <ClCompile Include="Assets\src\MoveUnitCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\src\FireCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\src\JumpCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\src\LurchCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\src\SwapCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\src\GameActor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Assets\src\Unit.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\src\CommandManager.cpp">
+      <Filter>Source Files\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,23 +47,11 @@
     <ClInclude Include="Assets\src\MoveUnitCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\src\FireCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\src\JumpCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\src\LurchCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\src\SwapCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\src\GameActor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\src\Unit.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\CommandManager.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "InputHandler.h"
-#include "vector"
 
 using namespace CommandPattern;
 
@@ -10,20 +9,15 @@ int main(void)
 
 	InputHandler inputHandler;
 	inputHandler.InitInput();
-	Command* command = nullptr;
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(RAYWHITE);
-		command = inputHandler.HandleInput();
-		if (command)
-		{
-			command->Execute();
-		}
+		inputHandler.HandleInput();
 		DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 		EndDrawing();
 	}
-	delete command;
+
 	CloseWindow();
 
 	return 0;

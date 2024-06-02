@@ -1,8 +1,8 @@
 #pragma once
 #include "Command.h"
-#include "MoveUnitCommand.h"
 #include "Unit.h"
-#include <vector>
+
+#include "CommandManager.h"
 using namespace CommandPattern;
 
 class InputHandler
@@ -10,22 +10,10 @@ class InputHandler
 public:
 	~InputHandler();
 	void InitInput();
-	Command* HandleInput();
+	void HandleInput();
 
 private:
-	unsigned int historyCapacity = 10;
-	Command* buttonX = nullptr;
-	Command* buttonY = nullptr;
-	Command* buttonA = nullptr;
-	Command* buttonB = nullptr;
-	MoveUnitCommand* moveUnitCommand = nullptr;
-	MoveUnitCommand* currentCommand = nullptr;
-	std::vector<MoveUnitCommand*>* commandHistory = nullptr;
 	Unit* unit = nullptr;
-
-	void ClearReferenceCommand() const;
-	void RemoveToEndHistory() const;
-	int GetIndexOfCurrentCommand() const;
-	MoveUnitCommand* GetCommandFromHistory(const int index) const;
+	CommandManager* commandManager = nullptr;
 };
 
