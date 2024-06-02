@@ -15,6 +15,7 @@ namespace CommandPattern
 
 		virtual void Execute();
 		virtual void Undo();
+		virtual void DrawInfo(const Color color);
 	private:
 		std::shared_ptr<Unit> unit;
 		int x, y;

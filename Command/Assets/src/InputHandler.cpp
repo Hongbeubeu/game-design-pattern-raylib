@@ -14,6 +14,7 @@ void InputHandler::InitInput(std::shared_ptr<Unit> unit, std::unique_ptr<Command
 
 void InputHandler::HandleInput()
 {
+	commandManager->DrawInfo();
 	int destX = handledUnit->X();
 	int destY = handledUnit->Y();
 

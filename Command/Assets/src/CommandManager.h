@@ -10,6 +10,7 @@ public:
 	void ExecuteCommand(std::unique_ptr<CommandPattern::Command> command);
 	void Undo();
 	void Redo();
+	void DrawInfo() const;
 
 private:
 	std::vector<std::unique_ptr<CommandPattern::Command>> history;

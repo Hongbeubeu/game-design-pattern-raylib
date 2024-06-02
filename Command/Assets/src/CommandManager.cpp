@@ -22,10 +22,23 @@ void CommandManager::Undo()
 
 void CommandManager::Redo()
 {
-	if(!redoStack.empty())
+	if (!redoStack.empty())
 	{
 		redoStack.back()->Execute();
 		history.push_back(std::move(redoStack.back()));
 		redoStack.pop_back();
+	}
+}
+
+void CommandManager::DrawInfo() const
+{
+	for (const auto& cmd : history)
+	{
+		cmd->DrawInfo(GRAY);
+	}
+
+	for (const auto& cmd : redoStack)
+	{
+		cmd->DrawInfo(BLUE);
 	}
 }

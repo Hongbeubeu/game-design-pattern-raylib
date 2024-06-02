@@ -1,5 +1,7 @@
 #include "MoveUnitCommand.h"
 
+#include "raylib.h"
+
 namespace CommandPattern
 {
 	void MoveUnitCommand::Execute()
@@ -12,6 +14,11 @@ namespace CommandPattern
 	void MoveUnitCommand::Undo()
 	{
 		unit->MoveTo(prevX, prevY);
+	}
+
+	void MoveUnitCommand::DrawInfo(const Color color)
+	{
+		DrawRectangle(x, y, 32, 32, color);
 	}
 }
 
