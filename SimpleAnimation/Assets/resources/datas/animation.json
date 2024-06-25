@@ -41,11 +41,47 @@
     }
   },
   "transitions": {
-    "idle": [ "attack", "dead", "hit", "react", "wall" ],
-    "attack": [ "idle", "dead", "hit", "react", "wall" ],
-    "dead": [ "idle", "attack", "hit", "react", "wall" ],
-    "hit": [ "idle", "attack", "dead", "react", "wall" ],
-    "react": [ "idle", "attack", "dead", "hit", "wall" ],
-    "wall": [ "idle", "attack", "dead", "hit", "react" ]
+    "idle": {
+      "attack": { "blend_duration": 0.3 },
+      "dead": { "blend_duration": 0.3 },
+      "hit": { "blend_duration": 0.3 },
+      "react": { "blend_duration": 0.3 },
+      "wall": { "blend_duration": 0.3 }
+    },
+    "attack": {
+      "idle": { "blend_duration": 0.3 },
+      "dead": { "blend_duration": 0.3 },
+      "hit": { "blend_duration": 0.3 },
+      "react": { "blend_duration": 0.3 },
+      "wall": { "blend_duration": 0.3 }
+    },
+    "dead": {
+      "idle": { "blend_duration": 0.3 },
+      "attack": { "blend_duration": 0.3 },
+      "hit": { "blend_duration": 0.3 },
+      "react": { "blend_duration": 0.3 },
+      "wall": { "blend_duration": 0.3 }
+    },
+    "hit": {
+      "idle": { "blend_duration": 0.3 },
+      "attack": { "blend_duration": 0.3 },
+      "dead": { "blend_duration": 0.3 },
+      "react": { "blend_duration": 0.3 },
+      "wall": { "blend_duration": 0.3 }
+    },
+    "react": {
+      "idle": { "blend_duration": 0.3 },
+      "attack": { "blend_duration": 0.3 },
+      "dead": { "blend_duration": 0.3 },
+      "hit": { "blend_duration": 0.3 },
+      "wall": { "blend_duration": 0.3 }
+    },
+    "wall": {
+      "idle": { "blend_duration": 0.3 },
+      "attack": { "blend_duration": 0.3 },
+      "dead": { "blend_duration": 0.3 },
+      "hit": { "blend_duration": 0.3 },
+      "react": { "blend_duration": 0.3 }
+    }
   }
 }

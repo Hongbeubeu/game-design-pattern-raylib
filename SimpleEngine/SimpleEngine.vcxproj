@@ -130,8 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\src\Component.cpp" />
-    <ClCompile Include="Assets\src\DrawableComponent.cpp" />
     <ClCompile Include="Assets\src\GameObject.cpp" />
     <ClCompile Include="Assets\src\RenderComponent.cpp" />
     <ClCompile Include="Assets\src\Scene.cpp" />

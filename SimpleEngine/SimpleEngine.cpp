@@ -29,12 +29,12 @@ public:
 	void Update(const float deltaTime) override
 	{
 		lerpTime += deltaTime;
-		if (lerpTime > 1.0f)
+		if (lerpTime > 10.0f)
 		{
 			lerpTime = 0.0f;
 		}
-		const auto nextPosition = Vector3Lerp(fromPosition, toPosition, lerpTime);
-		const auto nextRotation = Vector3Lerp(fromRotation, toRotation, lerpTime);
+		const auto nextPosition = Vector3Lerp(fromPosition, toPosition, lerpTime / 10.0f);
+		const auto nextRotation = Vector3Lerp(fromRotation, toRotation, lerpTime / 10.0f);
 		trans->SetPosition(nextPosition);
 		trans->SetRotation(QuaternionFromEuler(nextRotation.x, nextRotation.y, nextRotation.z));
 		auto message = "Position: " + std::to_string(nextPosition.x) + ", " + std::to_string(nextPosition.y) + ", " + std::to_string(nextPosition.z);
@@ -70,7 +70,7 @@ private:
 	Vector3 toPosition = { 0,0,10 };
 
 	Vector3 fromRotation = { 0,0,0 };
-	Vector3 toRotation = { 90, 0,0 };
+	Vector3 toRotation = { 0, 20,0 };
 	float lerpTime = 0.0f;
 };
 
@@ -95,7 +95,7 @@ int main()
 	model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("Assets/resources/rock.png");
 
 	const auto gameObject = std::make_shared<MyGameObject>();
-	gameObject->GetComponent<TransformComponent>()->SetPosition({ 10,0,0 });
+	gameObject->GetComponent<TransformComponent>()->SetPosition({ 0,0,0 });
 	gameObject->AddComponent(std::make_unique<RenderComponent>(model));
 
 	Scene scene;
@@ -128,8 +128,11 @@ int main()
 
 void DrawGrid()
 {
+	DrawGrid(40, 1);  
+
 	DrawLine3D({ 0,0,0 }, { 10,0,0 }, RED);
 	DrawLine3D({ 0,0,0 }, { 0,10,0 }, GREEN);
 	DrawLine3D({ 0,0,0 }, { 0,0,10 }, BLUE);
+
 }
 

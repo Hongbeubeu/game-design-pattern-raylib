@@ -16,6 +16,12 @@ struct Animation
 	std::map<int, std::vector<std::string>> triggers; // Map of frame index to trigger action
 };
 
+struct Transition
+{
+	std::string targetState;
+	float blendDuration;
+};
+
 class Animator
 {
 public:
@@ -27,15 +33,21 @@ public:
 	void RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback);
 private:
 	std::map<std::string, Animation> animations;
-	std::map<std::string, std::vector<std::string>> transitions;
+	std::map<std::string, std::map<std::string, Transition>> transitions;
 	std::map<std::string, std::function<void()>> triggerCallbacks;
 	std::string currentState;
+	std::string previousState;
 	int currentFrame;
+	int previousFrame;
 	float timer;
+	float blendTimer;
+	float blendDuration;
+	bool blending;
 
 	void LoadAnimations(const std::string& configFile);
 	void UnloadAnimations() const;
 	void CheckTriggers();
+	void DrawBlended(Vector2 position, float scale);
 };
 
 Animator::Animator(const std::string& configFile) : currentFrame(0), timer(0.0f)
@@ -84,13 +96,22 @@ void Animator::LoadAnimations(const std::string& configFile)
 		{
 			auto& key = transitionItems.key();
 			auto& value = transitionItems.value();
-			const std::vector<std::string> allowedTransitions = value;
-			transitions[key] = allowedTransitions;
+
+			std::map<std::string, Transition> transitionMap;
+
+			for (auto& transitionItem : value.items())
+			{
+				Transition transition;
+				transition.targetState = transitionItem.key();
+				transition.blendDuration = transitionItem.value()["blend_duration"];
+				transitionMap[transition.targetState] = transition;
+			}
+			transitions[key] = transitionMap;
 		}
 	}
 	else
 	{
-		std::cerr << "Failed to open file: " << configFile << std::endl;
+		std::cerr << "Failed to open file: " << configFile << '\n';
 	}
 }
 
@@ -104,34 +125,86 @@ void Animator::UnloadAnimations() const
 
 void Animator::Update(const float deltaTime)
 {
-	timer += deltaTime;
-	if (timer >= animations[currentState].frameTime)
+	if (blending)
 	{
-		timer = 0.0f;
-		currentFrame = (currentFrame + 1) % animations[currentState].frameCount;
-		CheckTriggers();
+		blendTimer += deltaTime;
+		if (blendTimer >= blendDuration)
+		{
+			blending = false;
+			currentFrame = 0;
+			timer = 0.0f;
+		}
+	}
+	else
+	{
+		timer += deltaTime;
+		if (timer >= animations[currentState].frameTime)
+		{
+			timer = 0.0f;
+			currentFrame = (currentFrame + 1) % animations[currentState].frameCount;
+			CheckTriggers();
+		}
 	}
 }
 
 void Animator::ChangeState(const std::string& newState)
 {
-	if (currentState != newState && std::find(transitions[currentState].begin(), transitions[currentState].end(), newState) != transitions[currentState].end())
+	if (currentState != newState && transitions[currentState].find(newState) != transitions[currentState].end())
 	{
+		previousState = currentState;
 		currentState = newState;
-		currentFrame = 0;
-		timer = 0.0f;
+		blendDuration = transitions[previousState][newState].blendDuration;
+		if (blendDuration > 0.0f)
+		{
+			blending = true;
+			blendTimer = 0.0f;
+		}
 	}
 }
 
-void Animator::Draw(const Vector2 position, float scale)
+void Animator::Draw(const Vector2 position, const float scale)
 {
-	const Animation& anim = animations[currentState];
-	const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
-	const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * 2, static_cast<float>(anim.frameHeight) * 2 };
-	const auto origin = Vector2{ dest.width / 2.0f, dest.height };
-	DrawRectangle(static_cast<int>(position.x - dest.width / 2.0f), static_cast<int>(position.y - dest.height),
-		static_cast<int>(dest.width), static_cast<int>(dest.height), GREEN);
-	DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, WHITE);
+	if (blending)
+	{
+		DrawBlended(position, scale);
+	}
+	else
+	{
+		const Animation& anim = animations[currentState];
+		const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
+		const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
+		const auto origin = Vector2{ dest.width / 2.0f, dest.height };
+		/*DrawRectangle(static_cast<int>(position.x - dest.width / 2.0f), static_cast<int>(position.y - dest.height),
+			static_cast<int>(dest.width), static_cast<int>(dest.height), GREEN);*/
+		DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, WHITE);
+	}
+}
+
+void Animator::DrawBlended(const Vector2 position, const float scale)
+{
+	const Animation& animPrev = animations[previousState];
+	const Animation& animCurr = animations[currentState];
+
+	const float blendFactor = blendTimer / blendDuration;
+
+	// Calculate current frame for both animations
+	const int framePrev = previousFrame + static_cast<int>(static_cast<float>(currentFrame - previousFrame) * blendFactor);
+	const int frameCurr = currentFrame;
+
+	// Draw previous animation frame
+	const Rectangle sourcePrev = { static_cast<float>(framePrev * animPrev.frameWidth), 0, static_cast<float>(animPrev.frameWidth), static_cast<float>(animPrev.frameHeight) };
+	const Rectangle destPrev = { position.x, position.y, static_cast<float>(animPrev.frameWidth) * scale, static_cast<float>(animPrev.frameHeight) * scale };
+	const Color tintPrev = Fade(WHITE, 1.0f - blendFactor);
+	auto origin = Vector2{ destPrev.width / 2.0f, destPrev.height };
+	DrawTexturePro(animPrev.spriteSheet, sourcePrev, destPrev, origin, 0.0f, tintPrev);
+
+	// Draw current animation frame
+	const Rectangle sourceCurr = { static_cast<float>(frameCurr * animCurr.frameWidth), 0, static_cast<float>(animCurr.frameWidth), static_cast<float>(animCurr.frameHeight) };
+	const Rectangle destCurr = { position.x, position.y, static_cast<float>(animCurr.frameWidth) * scale, static_cast<float>(animCurr.frameHeight) * scale };
+	const Color tintCurr = Fade(WHITE, blendFactor);
+	origin.x = destCurr.width / 2.0f;
+	origin.y = destCurr.height;
+	DrawTexturePro(animCurr.spriteSheet, sourceCurr, destCurr, origin, 0.0f, tintCurr);
 }
 
 Animator::~Animator()
@@ -159,6 +232,7 @@ void Animator::CheckTriggers()
 }
 
 
+
 int main()
 {
 	// Initialization
@@ -176,9 +250,9 @@ int main()
 		});
 
 	animator.RegisterTriggerCallback("deal_damage", []()
-	{
-		std::cout << "Dealing damage!\n";
-	});
+		{
+			std::cout << "Dealing damage!\n";
+		});
 
 	SetTargetFPS(60);
 
@@ -217,7 +291,7 @@ int main()
 		BeginDrawing();
 		ClearBackground(BLUE);
 
-		animator.Draw(Vector2{ screenWidth / 2.0f, screenHeight / 2.0f });
+		animator.Draw(Vector2{ screenWidth / 2.0f, screenHeight / 2.0f }, 5.0f);
 		EndDrawing();
 	}
 

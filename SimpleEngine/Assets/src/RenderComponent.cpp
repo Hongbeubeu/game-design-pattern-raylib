@@ -41,10 +41,12 @@ void RenderComponent::Draw(GameObject* gameObject) {
 	{
 		Transform transform = transformComponent->GetTransform();
 		Matrix matTransform = MatrixIdentity();
-		matTransform = MatrixMultiply(matTransform, MatrixTranslate(transform.translation.x, transform.translation.y, transform.translation.z));
-		matTransform = MatrixMultiply(matTransform, MatrixRotateXYZ(QuaternionToEuler(transform.rotation)));
 		matTransform = MatrixMultiply(matTransform, MatrixScale(transform.scale.x, transform.scale.y, transform.scale.z));
+		matTransform = MatrixMultiply(matTransform, MatrixRotateXYZ(QuaternionToEuler(transform.rotation)));
+		matTransform = MatrixMultiply(matTransform, MatrixTranslate(transform.translation.x, transform.translation.y, transform.translation.z));
 
-		DrawModelEx(model, transform.translation, Vector3{1,0,0},QuaternionToEuler(transform.rotation).x, transform.scale, WHITE);
+		model.transform = matTransform;
+		DrawModel(model, Vector3 { 0.0f, 0.0f, 0.0f }, 1.0f, WHITE);
+		//DrawModelEx(model, transform.translation, Vector3{0,1,0},0.0f, transform.scale, WHITE);
 	}
 }
