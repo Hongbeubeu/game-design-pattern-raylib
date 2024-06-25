@@ -1,0 +1,51 @@
+{
+  "animations": {
+    "attack": {
+      "frame_time": 0.1,
+      "frame_count": 18,
+      "sprite_sheet": "Assets/resources/spritesheets/attack.png",
+      "default": false,
+      "triggers": {
+        "10": [ "play_sound", "deal_damage" ]
+      }
+    },
+    "dead": {
+      "frame_time": 0.1,
+      "frame_count": 15,
+      "sprite_sheet": "Assets/resources/spritesheets/dead.png",
+      "default": false
+    },
+    "hit": {
+      "frame_time": 0.1,
+      "frame_count": 8,
+      "sprite_sheet": "Assets/resources/spritesheets/hit.png",
+      "default": false
+    },
+    "idle": {
+      "frame_time": 0.1,
+      "frame_count": 11,
+      "sprite_sheet": "Assets/resources/spritesheets/idle.png",
+      "default": true
+    },
+    "react": {
+      "frame_time": 0.1,
+      "frame_count": 4,
+      "sprite_sheet": "Assets/resources/spritesheets/react.png",
+      "default": false
+    },
+    "wall": {
+      "frame_time": 0.1,
+      "frame_count": 13,
+      "sprite_sheet": "Assets/resources/spritesheets/wall.png",
+      "default": false
+    }
+  },
+  "transitions": {
+    "idle": [ "attack", "dead", "hit", "react", "wall" ],
+    "attack": [ "idle", "dead", "hit", "react", "wall" ],
+    "dead": [ "idle", "attack", "hit", "react", "wall" ],
+    "hit": [ "idle", "attack", "dead", "react", "wall" ],
+    "react": [ "idle", "attack", "dead", "hit", "wall" ],
+    "wall": [ "idle", "attack", "dead", "hit", "react" ]
+  }
+}
