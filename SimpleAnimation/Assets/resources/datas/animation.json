@@ -6,7 +6,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/attack.png",
       "default": false,
       "origin": {
-        "x": 0.25,
+        "x": 0.28,
         "y": 1
       },
       "triggers": {
@@ -19,7 +19,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/dead.png",
       "default": false,
       "origin": {
-        "x": 0.5,
+        "x": 0.6,
         "y": 1
       }
     },
@@ -39,7 +39,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/idle.png",
       "default": true,
       "origin": {
-        "x": 0.25,
+        "x": 0.38,
         "y": 1
       }
     },
@@ -53,59 +53,59 @@
         "y": 1
       }
     },
-    "wall": {
+    "walk": {
       "frame_time": 0.1,
       "frame_count": 13,
-      "sprite_sheet": "Assets/resources/spritesheets/wall.png",
+      "sprite_sheet": "Assets/resources/spritesheets/walk.png",
       "default": false,
       "origin": {
-        "x": 0.3,
+        "x": 0.4,
         "y": 1
       }
     }
   },
   "transitions": {
     "idle": {
-      "attack": { "blend_duration": 0 },
-      "dead": { "blend_duration": 0 },
-      "hit": { "blend_duration": 0 },
-      "react": { "blend_duration": 0 },
-      "wall": { "blend_duration": 0 }
+      "attack": { "blend_duration": 0.2 },
+      "dead": { "blend_duration": 0.2 },
+      "hit": { "blend_duration": 0.2 },
+      "react": { "blend_duration": 0.2 },
+      "walk": { "blend_duration": 0.2 }
     },
     "attack": {
-      "idle": { "blend_duration": 0 },
-      "dead": { "blend_duration": 0 },
-      "hit": { "blend_duration": 0 },
-      "react": { "blend_duration": 0 },
-      "wall": { "blend_duration": 0 }
+      "idle": { "blend_duration": 0.2 },
+      "dead": { "blend_duration": 0.2 },
+      "hit": { "blend_duration": 0.2 },
+      "react": { "blend_duration": 0.2 },
+      "walk": { "blend_duration": 0.2 }
     },
     "dead": {
-      "idle": { "blend_duration": 0 },
-      "attack": { "blend_duration": 0 },
-      "hit": { "blend_duration": 0 },
-      "react": { "blend_duration": 0 },
-      "wall": { "blend_duration": 0 }
+      "idle": { "blend_duration": 0.2 },
+      "attack": { "blend_duration": 0.2 },
+      "hit": { "blend_duration": 0.2 },
+      "react": { "blend_duration": 0.2 },
+      "walk": { "blend_duration": 0.2 }
     },
     "hit": {
-      "idle": { "blend_duration": 0 },
-      "attack": { "blend_duration": 0 },
-      "dead": { "blend_duration": 0 },
-      "react": { "blend_duration": 0 },
-      "wall": { "blend_duration": 0 }
+      "idle": { "blend_duration": 0.2 },
+      "attack": { "blend_duration": 0.2 },
+      "dead": { "blend_duration": 0.2 },
+      "react": { "blend_duration": 0.2 },
+      "walk": { "blend_duration": 0.2 }
     },
     "react": {
-      "idle": { "blend_duration": 0 },
-      "attack": { "blend_duration": 0 },
-      "dead": { "blend_duration": 0 },
-      "hit": { "blend_duration": 0 },
-      "wall": { "blend_duration": 0 }
+      "idle": { "blend_duration": 0.2 },
+      "attack": { "blend_duration": 0.2 },
+      "dead": { "blend_duration": 0.2 },
+      "hit": { "blend_duration": 0.2 },
+      "walk": { "blend_duration": 0.2 }
     },
-    "wall": {
-      "idle": { "blend_duration": 0 },
-      "attack": { "blend_duration": 0 },
-      "dead": { "blend_duration": 0 },
-      "hit": { "blend_duration": 0 },
-      "react": { "blend_duration": 0 }
+    "walk": {
+      "idle": { "blend_duration": 0.2 },
+      "attack": { "blend_duration": 0.2 },
+      "dead": { "blend_duration": 0.2 },
+      "hit": { "blend_duration": 0.2 },
+      "react": { "blend_duration": 0.2 }
     }
   }
 }

@@ -146,7 +146,7 @@
     <Image Include="Assets\resources\spritesheets\hit.png" />
     <Image Include="Assets\resources\spritesheets\idle.png" />
     <Image Include="Assets\resources\spritesheets\react.png" />
-    <Image Include="Assets\resources\spritesheets\wall.png" />
+    <Image Include="Assets\resources\spritesheets\walk.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\src\json.hpp" />

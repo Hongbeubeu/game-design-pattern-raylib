@@ -171,6 +171,7 @@ void Animator::ChangeState(const std::string& newState)
 
 void Animator::Draw(const Vector2 position, const float scale)
 {
+	DrawText(currentState.c_str(), static_cast<int>(position.x), 0,40, BLACK);
 	if (blending)
 	{
 		DrawBlended(position, scale);
@@ -181,9 +182,10 @@ void Animator::Draw(const Vector2 position, const float scale)
 		const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
 		const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
 		const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
-		/*DrawRectangle(static_cast<int>(position.x - dest.width / 2.0f), static_cast<int>(position.y - dest.height),
+		/*DrawRectangle(static_cast<int>(position.x - origin.x), static_cast<int>(position.y - origin.y),
 			static_cast<int>(dest.width), static_cast<int>(dest.height), GREEN);*/
 		DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, WHITE);
+		//DrawCircle(position.x, position.y, 5.0f, RED);
 	}
 }
 
@@ -274,29 +276,29 @@ int main()
 		const float deltaTime = GetFrameTime();
 
 		// Simulate changing states
-		if (IsKeyPressed(KEY_UP))
+		if (IsKeyPressed(KEY_Q))
 		{
 			animator.ChangeState("idle");
 		}
-		else if (IsKeyPressed(KEY_DOWN))
+		else if (IsKeyPressed(KEY_W))
 		{
 			animator.ChangeState("attack");
 		}
-		else if (IsKeyPressed(KEY_LEFT))
+		else if (IsKeyPressed(KEY_E))
 		{
 			animator.ChangeState("dead");
 		}
-		else if (IsKeyPressed(KEY_RIGHT))
+		else if (IsKeyPressed(KEY_R))
 		{
 			animator.ChangeState("hit");
 		}
-		else if (IsKeyPressed(KEY_SPACE))
+		else if (IsKeyPressed(KEY_T))
 		{
 			animator.ChangeState("react");
 		}
-		else if (IsKeyPressed(KEY_ENTER))
+		else if (IsKeyPressed(KEY_Y))
 		{
-			animator.ChangeState("wall");
+			animator.ChangeState("walk");
 		}
 
 		animator.Update(deltaTime);
