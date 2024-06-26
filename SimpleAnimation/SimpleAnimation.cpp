@@ -159,6 +159,8 @@ void Animator::ChangeState(const std::string& newState)
 		previousState = currentState;
 		currentState = newState;
 		blendDuration = transitions[previousState][newState].blendDuration;
+		timer = 0.0f;
+		currentFrame = 0;
 		if (blendDuration > 0.0f)
 		{
 			blending = true;

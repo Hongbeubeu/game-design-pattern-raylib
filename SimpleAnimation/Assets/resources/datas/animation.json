@@ -6,7 +6,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/attack.png",
       "default": false,
       "origin": {
-        "x": 0,
+        "x": 0.25,
         "y": 1
       },
       "triggers": {
@@ -19,7 +19,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/dead.png",
       "default": false,
       "origin": {
-        "x": 0,
+        "x": 0.5,
         "y": 1
       }
     },
@@ -29,7 +29,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/hit.png",
       "default": false,
       "origin": {
-        "x": 0,
+        "x": 0.5,
         "y": 1
       }
     },
@@ -39,7 +39,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/idle.png",
       "default": true,
       "origin": {
-        "x": 0,
+        "x": 0.25,
         "y": 1
       }
     },
@@ -49,7 +49,7 @@
       "sprite_sheet": "Assets/resources/spritesheets/react.png",
       "default": false,
       "origin": {
-        "x": 0,
+        "x": 0.41,
         "y": 1
       }
     },
@@ -59,53 +59,53 @@
       "sprite_sheet": "Assets/resources/spritesheets/wall.png",
       "default": false,
       "origin": {
-        "x": 0,
+        "x": 0.3,
         "y": 1
       }
     }
   },
   "transitions": {
     "idle": {
-      "attack": { "blend_duration": 0.3 },
-      "dead": { "blend_duration": 0.3 },
-      "hit": { "blend_duration": 0.3 },
-      "react": { "blend_duration": 0.3 },
-      "wall": { "blend_duration": 0.3 }
+      "attack": { "blend_duration": 0 },
+      "dead": { "blend_duration": 0 },
+      "hit": { "blend_duration": 0 },
+      "react": { "blend_duration": 0 },
+      "wall": { "blend_duration": 0 }
     },
     "attack": {
-      "idle": { "blend_duration": 0.3 },
-      "dead": { "blend_duration": 0.3 },
-      "hit": { "blend_duration": 0.3 },
-      "react": { "blend_duration": 0.3 },
-      "wall": { "blend_duration": 0.3 }
+      "idle": { "blend_duration": 0 },
+      "dead": { "blend_duration": 0 },
+      "hit": { "blend_duration": 0 },
+      "react": { "blend_duration": 0 },
+      "wall": { "blend_duration": 0 }
     },
     "dead": {
-      "idle": { "blend_duration": 0.3 },
-      "attack": { "blend_duration": 0.3 },
-      "hit": { "blend_duration": 0.3 },
-      "react": { "blend_duration": 0.3 },
-      "wall": { "blend_duration": 0.3 }
+      "idle": { "blend_duration": 0 },
+      "attack": { "blend_duration": 0 },
+      "hit": { "blend_duration": 0 },
+      "react": { "blend_duration": 0 },
+      "wall": { "blend_duration": 0 }
     },
     "hit": {
-      "idle": { "blend_duration": 0.3 },
-      "attack": { "blend_duration": 0.3 },
-      "dead": { "blend_duration": 0.3 },
-      "react": { "blend_duration": 0.3 },
-      "wall": { "blend_duration": 0.3 }
+      "idle": { "blend_duration": 0 },
+      "attack": { "blend_duration": 0 },
+      "dead": { "blend_duration": 0 },
+      "react": { "blend_duration": 0 },
+      "wall": { "blend_duration": 0 }
     },
     "react": {
-      "idle": { "blend_duration": 0.3 },
-      "attack": { "blend_duration": 0.3 },
-      "dead": { "blend_duration": 0.3 },
-      "hit": { "blend_duration": 0.3 },
-      "wall": { "blend_duration": 0.3 }
+      "idle": { "blend_duration": 0 },
+      "attack": { "blend_duration": 0 },
+      "dead": { "blend_duration": 0 },
+      "hit": { "blend_duration": 0 },
+      "wall": { "blend_duration": 0 }
     },
     "wall": {
-      "idle": { "blend_duration": 0.3 },
-      "attack": { "blend_duration": 0.3 },
-      "dead": { "blend_duration": 0.3 },
-      "hit": { "blend_duration": 0.3 },
-      "react": { "blend_duration": 0.3 }
+      "idle": { "blend_duration": 0 },
+      "attack": { "blend_duration": 0 },
+      "dead": { "blend_duration": 0 },
+      "hit": { "blend_duration": 0 },
+      "react": { "blend_duration": 0 }
     }
   }
 }
