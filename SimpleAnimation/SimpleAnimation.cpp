@@ -12,6 +12,7 @@ struct Animation
 	Texture2D spriteSheet;
 	int frameWidth;
 	int frameHeight;
+	Vector2 origin;
 	float frameTime; // Time each frame is displayed
 	std::map<int, std::vector<std::string>> triggers; // Map of frame index to trigger action
 };
@@ -73,6 +74,10 @@ void Animator::LoadAnimations(const std::string& configFile)
 			anim.frameTime = value["frame_time"];
 			anim.frameWidth = anim.spriteSheet.width / anim.frameCount;
 			anim.frameHeight = anim.spriteSheet.height;
+			anim.origin = Vector2{
+				value["origin"]["x"],
+				value["origin"]["y"]
+			};
 
 			if (value["default"])
 			{
@@ -173,7 +178,7 @@ void Animator::Draw(const Vector2 position, const float scale)
 		const Animation& anim = animations[currentState];
 		const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
 		const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
-		const auto origin = Vector2{ dest.width / 2.0f, dest.height };
+		const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
 		/*DrawRectangle(static_cast<int>(position.x - dest.width / 2.0f), static_cast<int>(position.y - dest.height),
 			static_cast<int>(dest.width), static_cast<int>(dest.height), GREEN);*/
 		DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, WHITE);
@@ -195,15 +200,15 @@ void Animator::DrawBlended(const Vector2 position, const float scale)
 	const Rectangle sourcePrev = { static_cast<float>(framePrev * animPrev.frameWidth), 0, static_cast<float>(animPrev.frameWidth), static_cast<float>(animPrev.frameHeight) };
 	const Rectangle destPrev = { position.x, position.y, static_cast<float>(animPrev.frameWidth) * scale, static_cast<float>(animPrev.frameHeight) * scale };
 	const Color tintPrev = Fade(WHITE, 1.0f - blendFactor);
-	auto origin = Vector2{ destPrev.width / 2.0f, destPrev.height };
+	auto origin = Vector2{ destPrev.width * animPrev.origin.x, destPrev.height * animPrev.origin.y };
 	DrawTexturePro(animPrev.spriteSheet, sourcePrev, destPrev, origin, 0.0f, tintPrev);
 
 	// Draw current animation frame
 	const Rectangle sourceCurr = { static_cast<float>(frameCurr * animCurr.frameWidth), 0, static_cast<float>(animCurr.frameWidth), static_cast<float>(animCurr.frameHeight) };
 	const Rectangle destCurr = { position.x, position.y, static_cast<float>(animCurr.frameWidth) * scale, static_cast<float>(animCurr.frameHeight) * scale };
 	const Color tintCurr = Fade(WHITE, blendFactor);
-	origin.x = destCurr.width / 2.0f;
-	origin.y = destCurr.height;
+	origin.x = destCurr.width * animCurr.origin.x;
+	origin.y = destCurr.height * animCurr.origin.y;
 	DrawTexturePro(animCurr.spriteSheet, sourceCurr, destCurr, origin, 0.0f, tintCurr);
 }
 
@@ -240,6 +245,12 @@ int main()
 	constexpr int screenHeight = 450;
 
 	InitWindow(screenWidth, screenHeight, "2D Animation with Raylib");
+	// Load your icon image
+	const Image icon = LoadImage("Assets/resources/icons/icon.png"); // Make sure to provide the correct path
+
+	// Set the loaded image as the window icon
+	SetWindowIcon(icon);
+
 
 	Animator animator("Assets/resources/datas/animation.json");
 

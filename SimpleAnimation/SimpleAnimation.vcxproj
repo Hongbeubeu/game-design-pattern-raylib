@@ -134,6 +134,7 @@
     <ClCompile Include="SimpleAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\resources\icons\icon.png" />
     <Image Include="Assets\resources\sprite-sheets\attack.png" />
     <Image Include="Assets\resources\sprite-sheets\dead.png" />
     <Image Include="Assets\resources\sprite-sheets\hit.png" />

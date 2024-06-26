@@ -5,6 +5,10 @@
       "frame_count": 18,
       "sprite_sheet": "Assets/resources/spritesheets/attack.png",
       "default": false,
+      "origin": {
+        "x": 0,
+        "y": 1
+      },
       "triggers": {
         "10": [ "play_sound", "deal_damage" ]
       }
@@ -13,31 +17,51 @@
       "frame_time": 0.1,
       "frame_count": 15,
       "sprite_sheet": "Assets/resources/spritesheets/dead.png",
-      "default": false
+      "default": false,
+      "origin": {
+        "x": 0,
+        "y": 1
+      }
     },
     "hit": {
       "frame_time": 0.1,
       "frame_count": 8,
       "sprite_sheet": "Assets/resources/spritesheets/hit.png",
-      "default": false
+      "default": false,
+      "origin": {
+        "x": 0,
+        "y": 1
+      }
     },
     "idle": {
       "frame_time": 0.1,
       "frame_count": 11,
       "sprite_sheet": "Assets/resources/spritesheets/idle.png",
-      "default": true
+      "default": true,
+      "origin": {
+        "x": 0,
+        "y": 1
+      }
     },
     "react": {
       "frame_time": 0.1,
       "frame_count": 4,
       "sprite_sheet": "Assets/resources/spritesheets/react.png",
-      "default": false
+      "default": false,
+      "origin": {
+        "x": 0,
+        "y": 1
+      }
     },
     "wall": {
       "frame_time": 0.1,
       "frame_count": 13,
       "sprite_sheet": "Assets/resources/spritesheets/wall.png",
-      "default": false
+      "default": false,
+      "origin": {
+        "x": 0,
+        "y": 1
+      }
     }
   },
   "transitions": {
