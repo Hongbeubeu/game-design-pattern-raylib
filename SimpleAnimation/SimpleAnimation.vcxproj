@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\src\Animator.cpp" />
     <ClCompile Include="SimpleAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <Image Include="Assets\resources\spritesheets\walk.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\src\Animator.h" />
     <ClInclude Include="Assets\src\json.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
