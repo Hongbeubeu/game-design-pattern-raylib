@@ -24,6 +24,8 @@ void Animator::LoadAnimations(const std::string& configFile)
 				value["origin"]["x"],
 				value["origin"]["y"]
 			};
+			anim.loop = value["loop"];
+			anim.speedFactor = value["speed_factor"];
 
 			if (value["default"])
 			{
@@ -74,27 +76,71 @@ void Animator::UnloadAnimations() const
 	}
 }
 
+
+
 void Animator::Update(const float deltaTime)
 {
 	if (blending)
 	{
-		blendTimer += deltaTime;
-		if (blendTimer >= blendDuration)
-		{
-			blending = false;
-			currentFrame = 0;
-			timer = 0.0f;
-		}
+		DoBlending(deltaTime);
 	}
 	else
 	{
-		timer += deltaTime;
-		if (timer >= animations[currentState].frameTime)
+		DoUpdate(deltaTime);
+	}
+	CheckTriggers();
+}
+
+void Animator::DoBlending(const float deltaTime)
+{
+	blendTimer += deltaTime;
+	if (blendTimer >= blendDuration)
+	{
+		blending = false;
+		currentFrame = 0;
+		timer = 0.0f;
+	}
+}
+
+void Animator::DoUpdate(const float deltaTime)
+{
+	const Animation& anim = animations[currentState];
+
+	timer += deltaTime * anim.speedFactor;
+	if (timer >= anim.frameTime)
+	{
+		timer = 0.0f;
+		if (anim.speedFactor > 0)
 		{
-			timer = 0.0f;
-			currentFrame = (currentFrame + 1) % animations[currentState].frameCount;
-			CheckTriggers();
+			currentFrame++;
+			if (currentFrame >= anim.frameCount)
+			{
+				if (anim.loop)
+				{
+					currentFrame = 0;
+				}
+				else
+				{
+					currentFrame = anim.frameCount - 1;
+				}
+			}
 		}
+		else
+		{
+			currentFrame--;
+			if (currentFrame < 0)
+			{
+				if (anim.loop)
+				{
+					currentFrame = anim.frameCount - 1;
+				}
+				else
+				{
+					currentFrame = 0;
+				}
+			}
+		}
+
 	}
 }
 
@@ -163,6 +209,13 @@ void Animator::RegisterTriggerCallback(const std::string& trigger, const std::fu
 {
 	triggerCallbacks[trigger] = callback;
 }
+
+void Animator::SetBool(const std::string& parameter, const bool value)
+{
+	parameters[parameter] = value;
+}
+
+
 
 void Animator::CheckTriggers()
 {

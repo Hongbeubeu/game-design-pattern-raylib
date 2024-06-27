@@ -9,6 +9,8 @@
         "x": 0.28,
         "y": 1
       },
+      "loop": false,
+      "speed_factor": 1.0,
       "triggers": {
         "10": [ "play_sound", "deal_damage" ]
       }
@@ -21,7 +23,9 @@
       "origin": {
         "x": 0.6,
         "y": 1
-      }
+      },
+      "loop": false,
+      "speed_factor": 1.0
     },
     "hit": {
       "frame_time": 0.1,
@@ -31,7 +35,9 @@
       "origin": {
         "x": 0.5,
         "y": 1
-      }
+      },
+      "loop": false,
+      "speed_factor": 1.0
     },
     "idle": {
       "frame_time": 0.1,
@@ -41,7 +47,9 @@
       "origin": {
         "x": 0.38,
         "y": 1
-      }
+      },
+      "loop": true,
+      "speed_factor": 1.0
     },
     "react": {
       "frame_time": 0.1,
@@ -51,7 +59,9 @@
       "origin": {
         "x": 0.41,
         "y": 1
-      }
+      },
+      "loop": true,
+      "speed_factor": 1.0
     },
     "walk": {
       "frame_time": 0.1,
@@ -61,7 +71,9 @@
       "origin": {
         "x": 0.4,
         "y": 1
-      }
+      },
+      "loop": true,
+      "speed_factor": 1.0
     }
   },
   "transitions": {
