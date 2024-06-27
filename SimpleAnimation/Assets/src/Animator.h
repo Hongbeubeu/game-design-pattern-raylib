@@ -91,4 +91,5 @@ private:
 	void CheckTriggers();
 	void DrawBlended(Vector2 position, float scale);
 	void DoBlending(float deltaTime);
+	int GetFirstFrame();
 };

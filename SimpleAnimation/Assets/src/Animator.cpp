@@ -88,7 +88,7 @@ void Animator::Update(const float deltaTime)
 	{
 		DoUpdate(deltaTime);
 	}
-	CheckTriggers();
+
 }
 
 void Animator::DoBlending(const float deltaTime)
@@ -97,8 +97,22 @@ void Animator::DoBlending(const float deltaTime)
 	if (blendTimer >= blendDuration)
 	{
 		blending = false;
-		currentFrame = 0;
+		currentFrame = GetFirstFrame();
 		timer = 0.0f;
+		CheckTriggers();
+	}
+}
+
+int Animator::GetFirstFrame()
+{
+	const Animation& anim = animations[currentState];
+	if (anim.speedFactor > 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return anim.frameCount - 1;
 	}
 }
 
@@ -106,7 +120,7 @@ void Animator::DoUpdate(const float deltaTime)
 {
 	const Animation& anim = animations[currentState];
 
-	timer += deltaTime * anim.speedFactor;
+	timer += deltaTime * abs(anim.speedFactor);
 	if (timer >= anim.frameTime)
 	{
 		timer = 0.0f;
@@ -140,7 +154,7 @@ void Animator::DoUpdate(const float deltaTime)
 				}
 			}
 		}
-
+		CheckTriggers();
 	}
 }
 
@@ -152,7 +166,7 @@ void Animator::ChangeState(const std::string& newState)
 		currentState = newState;
 		blendDuration = transitions[previousState][newState].blendDuration;
 		timer = 0.0f;
-		currentFrame = 0;
+		currentFrame = GetFirstFrame();
 		if (blendDuration > 0.0f)
 		{
 			blending = true;

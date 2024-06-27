@@ -73,7 +73,7 @@
         "y": 1
       },
       "loop": true,
-      "speed_factor": 1.0
+      "speed_factor": -1.0
     }
   },
   "transitions": {
