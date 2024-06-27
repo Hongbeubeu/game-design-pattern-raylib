@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)$(Platform)\Build\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\Build\$(Configuration)\Intermediate\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -108,11 +112,18 @@
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\build\raylib\bin\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;gdi32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)Assets/resources" "$(TargetDir)Assets/resources" /E /I /Y</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if exist "$(TargetDir)Assets" rmdir /s /q "$(TargetDir)Assets"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -134,6 +145,7 @@
     <ClCompile Include="SimpleAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\resources\icons\icon.ico" />
     <Image Include="Assets\resources\icons\icon.png" />
     <Image Include="Assets\resources\sprite-sheets\attack.png" />
     <Image Include="Assets\resources\sprite-sheets\dead.png" />
@@ -150,9 +162,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\src\json.hpp" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\resources\datas\animation.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimpleAnimation.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

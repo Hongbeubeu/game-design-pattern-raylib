@@ -59,13 +59,24 @@
     <Image Include="Assets\resources\icons\icon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\resources\icons\icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\src\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\resources\datas\animation.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimpleAnimation.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
