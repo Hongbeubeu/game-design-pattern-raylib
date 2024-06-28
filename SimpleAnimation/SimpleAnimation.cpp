@@ -39,27 +39,57 @@ int main()
 		// Simulate changing states
 		if (IsKeyPressed(KEY_Q))
 		{
-			animator.ChangeState("idle");
+			animator.SetCondition("is_idling", true);
+			animator.SetCondition("is_attacking", false);
+			animator.SetCondition("is_dead", false);
+			animator.SetCondition("is_reacting", false);
+			animator.SetCondition("is_hitting", false);
+			animator.SetCondition("is_walking", false);
 		}
 		else if (IsKeyPressed(KEY_W))
 		{
-			animator.ChangeState("attack");
+			animator.SetCondition("is_idling", false);
+			animator.SetCondition("is_attacking", true);
+			animator.SetCondition("is_dead", false);
+			animator.SetCondition("is_reacting", false);
+			animator.SetCondition("is_hitting", false);
+			animator.SetCondition("is_walking", false);
 		}
 		else if (IsKeyPressed(KEY_E))
 		{
-			animator.ChangeState("dead");
+			animator.SetCondition("is_idling", false);
+			animator.SetCondition("is_attacking", false);
+			animator.SetCondition("is_dead", true);
+			animator.SetCondition("is_reacting", false);
+			animator.SetCondition("is_hitting", false);
+			animator.SetCondition("is_walking", false);
 		}
 		else if (IsKeyPressed(KEY_R))
 		{
-			animator.ChangeState("hit");
+			animator.SetCondition("is_idling", false);
+			animator.SetCondition("is_attacking", false);
+			animator.SetCondition("is_dead", false);
+			animator.SetCondition("is_reacting", true);
+			animator.SetCondition("is_hitting", false);
+			animator.SetCondition("is_walking", false);
 		}
 		else if (IsKeyPressed(KEY_T))
 		{
-			animator.ChangeState("react");
+			animator.SetCondition("is_idling", false);
+			animator.SetCondition("is_attacking", false);
+			animator.SetCondition("is_dead", false);
+			animator.SetCondition("is_reacting", false);
+			animator.SetCondition("is_hitting", true);
+			animator.SetCondition("is_walking", false);
 		}
 		else if (IsKeyPressed(KEY_Y))
 		{
-			animator.ChangeState("walk");
+			animator.SetCondition("is_idling", false);
+			animator.SetCondition("is_attacking", false);
+			animator.SetCondition("is_dead", false);
+			animator.SetCondition("is_reacting", false);
+			animator.SetCondition("is_hitting", false);
+			animator.SetCondition("is_walking", true);
 		}
 
 		animator.Update(deltaTime);

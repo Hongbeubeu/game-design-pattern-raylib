@@ -57,6 +57,7 @@ void Animator::LoadAnimations(const std::string& configFile)
 				Transition transition;
 				transition.targetState = transitionItem.key();
 				transition.blendDuration = transitionItem.value()["blend_duration"];
+				transition.conditions = transitionItem.value()["conditions"].get<std::vector<std::string>>();
 				transitionMap[transition.targetState] = transition;
 			}
 			transitions[key] = transitionMap;
@@ -89,6 +90,15 @@ void Animator::Update(const float deltaTime)
 		DoUpdate(deltaTime);
 	}
 
+	// Check if any transitions should occur based on conditions
+	for (const auto& transition : transitions[currentState])
+	{
+		if (CheckConditions(transition.second.conditions))
+		{
+			ChangeState(transition.first);
+			break;
+		}
+	}
 }
 
 void Animator::DoBlending(const float deltaTime)
@@ -175,6 +185,7 @@ void Animator::ChangeState(const std::string& newState)
 	}
 }
 
+
 void Animator::Draw(const Vector2 position, const float scale)
 {
 	DrawText(currentState.c_str(), static_cast<int>(position.x), 0, 40, BLACK);
@@ -184,12 +195,17 @@ void Animator::Draw(const Vector2 position, const float scale)
 	}
 	else
 	{
-		const Animation& anim = animations[currentState];
-		const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
-		const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
-		const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
-		DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, WHITE);
+		DoDrawTexture(animations[currentState], position, scale, 1);
 	}
+}
+
+void Animator::DoDrawTexture(const Animation& anim, const Vector2 position, const float scale, const float blendFactor) const
+{
+	const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
+	const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
+	const Color tint = Fade(WHITE, blendFactor);
+	const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
+	DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, tint);
 }
 
 void Animator::DrawBlended(const Vector2 position, const float scale)
@@ -204,19 +220,10 @@ void Animator::DrawBlended(const Vector2 position, const float scale)
 	const int frameCurr = currentFrame;
 
 	// Draw previous animation frame
-	const Rectangle sourcePrev = { static_cast<float>(framePrev * animPrev.frameWidth), 0, static_cast<float>(animPrev.frameWidth), static_cast<float>(animPrev.frameHeight) };
-	const Rectangle destPrev = { position.x, position.y, static_cast<float>(animPrev.frameWidth) * scale, static_cast<float>(animPrev.frameHeight) * scale };
-	const Color tintPrev = Fade(WHITE, 1.0f - blendFactor);
-	auto origin = Vector2{ destPrev.width * animPrev.origin.x, destPrev.height * animPrev.origin.y };
-	DrawTexturePro(animPrev.spriteSheet, sourcePrev, destPrev, origin, 0.0f, tintPrev);
+	DoDrawTexture(animPrev, position, scale, 1.0f - blendFactor);
 
 	// Draw current animation frame
-	const Rectangle sourceCurr = { static_cast<float>(frameCurr * animCurr.frameWidth), 0, static_cast<float>(animCurr.frameWidth), static_cast<float>(animCurr.frameHeight) };
-	const Rectangle destCurr = { position.x, position.y, static_cast<float>(animCurr.frameWidth) * scale, static_cast<float>(animCurr.frameHeight) * scale };
-	const Color tintCurr = Fade(WHITE, blendFactor);
-	origin.x = destCurr.width * animCurr.origin.x;
-	origin.y = destCurr.height * animCurr.origin.y;
-	DrawTexturePro(animCurr.spriteSheet, sourceCurr, destCurr, origin, 0.0f, tintCurr);
+	DoDrawTexture(animCurr, position, scale, blendFactor);
 }
 
 void Animator::RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback)
@@ -224,12 +231,22 @@ void Animator::RegisterTriggerCallback(const std::string& trigger, const std::fu
 	triggerCallbacks[trigger] = callback;
 }
 
-void Animator::SetBool(const std::string& parameter, const bool value)
+void Animator::SetCondition(const std::string& condition, bool value)
 {
-	parameters[parameter] = value;
+	conditions[condition] = value;
 }
 
-
+bool Animator::CheckConditions(const std::vector<std::string>& requireConditions)
+{
+	for (const auto& condition : requireConditions)
+	{
+		if (conditions.find(condition) == conditions.end() || !conditions[condition])
+		{
+			return false;
+		}
+	}
+	return true;
+}
 
 void Animator::CheckTriggers()
 {

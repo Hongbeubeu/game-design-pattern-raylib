@@ -24,8 +24,8 @@
         "x": 0.6,
         "y": 1
       },
-      "loop": false,
-      "speed_factor": 1.0
+      "loop": true,
+      "speed_factor": -2.0
     },
     "hit": {
       "frame_time": 0.1,
@@ -78,46 +78,136 @@
   },
   "transitions": {
     "idle": {
-      "attack": { "blend_duration": 0.2 },
-      "dead": { "blend_duration": 0.2 },
-      "hit": { "blend_duration": 0.2 },
-      "react": { "blend_duration": 0.2 },
-      "walk": { "blend_duration": 0.2 }
+      "attack": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "dead": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_dead" ]
+      },
+      "hit": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_hitting" ]
+      },
+      "react": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_reacting" ]
+      },
+      "walk": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_walking" ]
+      }
     },
     "attack": {
-      "idle": { "blend_duration": 0.2 },
-      "dead": { "blend_duration": 0.2 },
-      "hit": { "blend_duration": 0.2 },
-      "react": { "blend_duration": 0.2 },
-      "walk": { "blend_duration": 0.2 }
+      "idle": {
+        "blend_duration": 0,
+        "conditions": [ "is_idling" ]
+      },
+      "dead": {
+        "blend_duration": 0,
+        "conditions": [ "is_dead" ]
+      },
+      "hit": {
+        "blend_duration": 0,
+        "conditions": [ "is_hitting" ]
+      },
+      "react": {
+        "blend_duration": 0,
+        "conditions": [ "is_reacting" ]
+      },
+      "walk": {
+        "blend_duration": 0,
+        "conditions": [ "is_walking" ]
+      }
     },
     "dead": {
-      "idle": { "blend_duration": 0.2 },
-      "attack": { "blend_duration": 0.2 },
-      "hit": { "blend_duration": 0.2 },
-      "react": { "blend_duration": 0.2 },
-      "walk": { "blend_duration": 0.2 }
+      "idle": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_idling" ]
+      },
+      "attack": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "hit": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "react": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_reacting" ]
+      },
+      "walk": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_walking" ]
+      }
     },
     "hit": {
-      "idle": { "blend_duration": 0.2 },
-      "attack": { "blend_duration": 0.2 },
-      "dead": { "blend_duration": 0.2 },
-      "react": { "blend_duration": 0.2 },
-      "walk": { "blend_duration": 0.2 }
+      "idle": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_idling" ]
+      },
+      "attack": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "dead": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_dead" ]
+      },
+      "react": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_reacting" ]
+      },
+      "walk": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_walking" ]
+      }
     },
     "react": {
-      "idle": { "blend_duration": 0.2 },
-      "attack": { "blend_duration": 0.2 },
-      "dead": { "blend_duration": 0.2 },
-      "hit": { "blend_duration": 0.2 },
-      "walk": { "blend_duration": 0.2 }
+      "idle": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_idling" ]
+      },
+      "attack": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "dead": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_dead" ]
+      },
+      "hit": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_hitting" ]
+      },
+      "walk": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_walking" ]
+      }
     },
     "walk": {
-      "idle": { "blend_duration": 0.2 },
-      "attack": { "blend_duration": 0.2 },
-      "dead": { "blend_duration": 0.2 },
-      "hit": { "blend_duration": 0.2 },
-      "react": { "blend_duration": 0.2 }
+      "idle": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_idling" ]
+      },
+      "attack": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_attacking" ]
+      },
+      "dead": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_dead" ]
+      },
+      "hit": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_hitting" ]
+      },
+      "react": {
+        "blend_duration": 0.2,
+        "conditions": [ "is_reacting" ]
+      }
     }
   }
 }

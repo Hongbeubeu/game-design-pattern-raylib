@@ -54,7 +54,7 @@ struct Transition
 {
 	std::string targetState;
 	float blendDuration;
-	std::vector<Condition> conditions;
+	std::vector<std::string> conditions;
 };
 
 class Animator
@@ -73,7 +73,7 @@ public:
 	void SetFloat(const std::string& parameter, float value);
 	void SetTrigger(const std::string& parameter);
 	void ResetTrigger(const std::string& parameter);
-	bool CheckConditions(const std::vector<Condition>& conditions);
+	void SetCondition(const std::string& condition, bool value);
 private:
 	std::map<std::string, Animation> animations;
 	std::map<std::string, std::map<std::string, Transition>> transitions;
@@ -86,10 +86,12 @@ private:
 	float blendTimer = 0;
 	float blendDuration = 0;
 	bool blending = false;
-	std::map<std::string, bool> parameters;
+	std::map<std::string, bool> conditions;
 
 	void CheckTriggers();
+	bool CheckConditions(const std::vector<std::string>& conditions);
 	void DrawBlended(Vector2 position, float scale);
 	void DoBlending(float deltaTime);
+	void DoDrawTexture(const Animation& anim,Vector2 position, float scale, float blendFactor) const;
 	int GetFirstFrame();
 };
