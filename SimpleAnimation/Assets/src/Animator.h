@@ -1,6 +1,8 @@
 #pragma once
 #include "raylib.h"
 #include "json.hpp"
+#include <variant>
+#include <functional>
 
 using json = nlohmann::json;
 
@@ -54,7 +56,7 @@ struct Transition
 {
 	std::string targetState;
 	float blendDuration;
-	std::vector<std::string> conditions;
+	std::vector<Condition> conditions;
 };
 
 class Animator
@@ -62,10 +64,8 @@ class Animator
 public:
 	void LoadAnimations(const std::string& configFile);
 	void UnloadAnimations() const;
-	void DoUpdate(float deltaTime);
 
 	void Update(float deltaTime);
-	void ChangeState(const std::string& newState);
 	void Draw(Vector2 position, float scale);
 	void RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback);
 	void SetBool(const std::string& parameter, bool value);
@@ -73,11 +73,13 @@ public:
 	void SetFloat(const std::string& parameter, float value);
 	void SetTrigger(const std::string& parameter);
 	void ResetTrigger(const std::string& parameter);
-	void SetCondition(const std::string& condition, bool value);
 private:
 	std::map<std::string, Animation> animations;
 	std::map<std::string, std::map<std::string, Transition>> transitions;
+	std::map<std::string, std::variant<bool, float, int>> parameters;
+	std::map<std::string, bool> triggers;
 	std::map<std::string, std::function<void()>> triggerCallbacks;
+
 	std::string currentState;
 	std::string previousState;
 	int currentFrame = 0;
@@ -86,11 +88,13 @@ private:
 	float blendTimer = 0;
 	float blendDuration = 0;
 	bool blending = false;
-	std::map<std::string, bool> conditions;
 
 	void CheckTriggers();
-	bool CheckConditions(const std::vector<std::string>& conditions);
+	bool CheckConditions(const std::vector<Condition>& conditions);
+	void ChangeState(const std::string& newState);
+
 	void DrawBlended(Vector2 position, float scale);
+	void DoUpdate(float deltaTime);
 	void DoBlending(float deltaTime);
 	void DoDrawTexture(const Animation& anim,Vector2 position, float scale, float blendFactor) const;
 	int GetFirstFrame();
