@@ -83,112 +83,67 @@
         "conditions": [
           {
             "parameter": "is_attacking",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
+        ],
+        "automatic": false
       },
       "dead": {
         "blend_duration": 0.2,
         "conditions": [
           {
-            "parameter": "is_dead",
-            "type": "bool",
+            "parameter": "is_dying",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
+        ],
+        "automatic": false
       },
       "hit": {
         "blend_duration": 0.2,
         "conditions": [
           {
             "parameter": "is_hitting",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
+        ],
+        "automatic": false
       },
       "react": {
         "blend_duration": 0.2,
         "conditions": [
           {
             "parameter": "is_reacting",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
+        ],
+        "automatic": false
       },
       "walk": {
         "blend_duration": 0.2,
         "conditions": [
           {
             "parameter": "is_walking",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
+        ],
+        "automatic": false
       }
     },
     "attack": {
       "idle": {
         "blend_duration": 0,
-        "conditions": [
-          {
-            "parameter": "is_idling",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "dead": {
-        "blend_duration": 0,
-        "conditions": [
-          {
-            "parameter": "is_dead",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "hit": {
-        "blend_duration": 0,
-        "conditions": [
-          {
-            "parameter": "is_hitting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "react": {
-        "blend_duration": 0,
-        "conditions": [
-          {
-            "parameter": "is_reacting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "walk": {
-        "blend_duration": 0,
-        "conditions": [
-          {
-            "parameter": "is_walking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
+        "conditions": [],
+        "automatic": true
       }
     },
     "dead": {
@@ -197,112 +152,19 @@
         "conditions": [
           {
             "parameter": "is_idling",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
-      },
-      "attack": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_attacking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "hit": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_hitting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "react": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_reacting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "walk": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_walking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
+        ],
+        "automatic": false
       }
     },
     "hit": {
       "idle": {
         "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_idling",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "attack": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_attacking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "dead": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_dead",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "react": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_reacting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "walk": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_walking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
+        "conditions": [],
+        "automatic": true
       }
     },
     "react": {
@@ -311,55 +173,12 @@
         "conditions": [
           {
             "parameter": "is_idling",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
-      },
-      "attack": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_attacking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "dead": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_dead",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "hit": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_hitting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "walk": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_walking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
+        ],
+        "automatic": false
       }
     },
     "walk": {
@@ -368,55 +187,12 @@
         "conditions": [
           {
             "parameter": "is_idling",
-            "type": "bool",
+            "type": "trigger",
             "comparison": "equal",
             "value": true
           }
-        ]
-      },
-      "attack": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_attacking",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "dead": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_dead",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "hit": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_hitting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
-      },
-      "react": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_reacting",
-            "type": "bool",
-            "comparison": "equal",
-            "value": true
-          }
-        ]
+        ],
+        "automatic": false
       }
     }
   }

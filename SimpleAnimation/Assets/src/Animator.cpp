@@ -3,9 +3,17 @@
 #include <fstream>
 #include <cmath>
 
-void Animator::LoadAnimations(const std::string& configFile)
+#pragma region Public Methods
+
+unsigned long long Animator::GetHash(const std::string& str)
 {
-	std::ifstream file(configFile);
+	constexpr std::hash<std::string> hasher;
+	return hasher(str);
+}
+
+void Animator::LoadAnimations(const std::string& animationDataPath)
+{
+	std::ifstream file(animationDataPath);
 	if (file.is_open())
 	{
 		nlohmann::json jsonData;
@@ -82,6 +90,7 @@ void Animator::LoadAnimations(const std::string& configFile)
 
 					transition.conditions.push_back(condition);
 				}
+				transition.automatic = transitionItem.value()["automatic"];
 				transitionMap[transition.targetState] = transition;
 			}
 			transitions[key] = transitionMap;
@@ -89,7 +98,7 @@ void Animator::LoadAnimations(const std::string& configFile)
 	}
 	else
 	{
-		std::cerr << "Failed to open file: " << configFile << '\n';
+		std::cerr << "Failed to open file: " << animationDataPath << '\n';
 	}
 }
 
@@ -100,8 +109,6 @@ void Animator::UnloadAnimations() const
 		UnloadTexture(item.second.spriteSheet);
 	}
 }
-
-
 
 void Animator::Update(const float deltaTime)
 {
@@ -117,6 +124,11 @@ void Animator::Update(const float deltaTime)
 	// Check if any transitions should occur based on conditions
 	for (const auto& transition : transitions[currentState])
 	{
+		// Skip automatic transitions without conditions
+		if (transition.second.automatic && transition.second.conditions.empty())
+		{
+			continue;
+		}
 		if (CheckConditions(transition.second.conditions))
 		{
 			ChangeState(transition.first);
@@ -132,87 +144,6 @@ void Animator::Update(const float deltaTime)
 	}
 }
 
-void Animator::DoBlending(const float deltaTime)
-{
-	blendTimer += deltaTime;
-	if (blendTimer >= blendDuration)
-	{
-		blending = false;
-		currentFrame = GetFirstFrame();
-		timer = 0.0f;
-		CheckTriggers();
-	}
-}
-
-int Animator::GetFirstFrame()
-{
-	const Animation& anim = animations[currentState];
-	if (anim.speedFactor > 0)
-	{
-		return 0;
-	}
-	return anim.frameCount - 1;
-}
-
-int Animator::GetLastFrame()
-{
-	const Animation& anim = animations[currentState];
-	if (anim.speedFactor > 0)
-	{
-		return anim.frameCount - 1;
-	}
-	return 0;
-}
-
-void Animator::DoUpdate(const float deltaTime)
-{
-	const Animation& anim = animations[currentState];
-
-	// Update timer, wrapping around using std::fmod precision
-	timer = std::fmod(timer + deltaTime * std::abs(anim.speedFactor), anim.frameTime);
-
-	// Determine if we need to change the current frame based on the timer
-	if (timer < deltaTime * std::abs(anim.speedFactor))
-	{
-		// Adjust current frame based on the direction of the animation
-		currentFrame += (anim.speedFactor > 0) ? 1 : -1;
-
-		// Handle animation looping or resetting to the first frame
-		if (currentFrame >= anim.frameCount || currentFrame < 0)
-		{
-			if (anim.loop)
-			{
-				currentFrame = GetFirstFrame();
-			}
-			else
-			{
-				currentFrame = GetLastFrame();
-			}
-		}
-
-		// Check if any triggers should be fired
-		CheckTriggers();
-	}
-}
-
-void Animator::ChangeState(const std::string& newState)
-{
-	if (currentState != newState && transitions[currentState].find(newState) != transitions[currentState].end())
-	{
-		previousState = currentState;
-		currentState = newState;
-		blendDuration = transitions[previousState][newState].blendDuration;
-		timer = 0.0f;
-		currentFrame = GetFirstFrame();
-		if (blendDuration > 0.0f)
-		{
-			blending = true;
-			blendTimer = 0.0f;
-		}
-	}
-}
-
-
 void Animator::Draw(const Vector2 position, const float scale)
 {
 	DrawText(currentState.c_str(), static_cast<int>(position.x), 0, 40, BLACK);
@@ -224,33 +155,6 @@ void Animator::Draw(const Vector2 position, const float scale)
 	{
 		DoDrawTexture(animations[currentState], position, scale, 1);
 	}
-}
-
-void Animator::DoDrawTexture(const Animation& anim, const Vector2 position, const float scale, const float blendFactor) const
-{
-	const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
-	const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
-	const Color tint = Fade(WHITE, blendFactor);
-	const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
-	DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, tint);
-}
-
-void Animator::DrawBlended(const Vector2 position, const float scale)
-{
-	const Animation& animPrev = animations[previousState];
-	const Animation& animCurr = animations[currentState];
-
-	const float blendFactor = blendTimer / blendDuration;
-
-	// Calculate current frame for both animations
-	const int framePrev = previousFrame + static_cast<int>(static_cast<float>(currentFrame - previousFrame) * blendFactor);
-	const int frameCurr = currentFrame;
-
-	// Draw previous animation frame
-	DoDrawTexture(animPrev, position, scale, 1.0f - blendFactor);
-
-	// Draw current animation frame
-	DoDrawTexture(animCurr, position, scale, blendFactor);
 }
 
 void Animator::RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback)
@@ -283,11 +187,28 @@ void Animator::ResetTrigger(const std::string& parameter)
 	triggers[parameter] = false;
 }
 
+#pragma endregion
+
+#pragma region Private Methods
+void Animator::CheckTriggers()
+{
+	Animation& anim = animations[currentState];
+	if (anim.triggers.find(currentFrame) != anim.triggers.end())
+	{
+		const std::vector<std::string> triggers = anim.triggers[currentFrame];
+		for (const std::string& trigger : triggers)
+			if (triggerCallbacks.find(trigger) != triggerCallbacks.end())
+			{
+				triggerCallbacks[trigger]();
+			}
+	}
+}
+
 bool Animator::CheckConditions(const std::vector<Condition>& conditions)
 {
 	for (const auto& condition : conditions)
 	{
-		if (parameters.find(condition.parameterName) == parameters.end())
+		if (parameters.find(condition.parameterName) == parameters.end() && condition.type != CONDITION_TRIGGER)
 		{
 			return false;
 		}
@@ -336,16 +257,125 @@ bool Animator::CheckConditions(const std::vector<Condition>& conditions)
 	return true;
 }
 
-void Animator::CheckTriggers()
+void Animator::ChangeState(const std::string& newState)
 {
-	Animation& anim = animations[currentState];
-	if (anim.triggers.find(currentFrame) != anim.triggers.end())
+	if (currentState != newState && transitions[currentState].find(newState) != transitions[currentState].end())
 	{
-		const std::vector<std::string> triggers = anim.triggers[currentFrame];
-		for (const std::string& trigger : triggers)
-			if (triggerCallbacks.find(trigger) != triggerCallbacks.end())
-			{
-				triggerCallbacks[trigger]();
-			}
+		auto timeToEndAnim = animations[currentState].frameTime *static_cast<float>(animations[currentState].frameCount) - static_cast<float>(currentFrame) * animations[currentState].frameTime;
+		previousState = currentState;
+		currentState = newState;
+		blendDuration = transitions[previousState][newState].blendDuration >= timeToEndAnim ? timeToEndAnim : transitions[previousState][newState].blendDuration;
+		timer = 0.0f;
+		currentFrame = GetFirstFrame();
+		if (blendDuration > 0.0f)
+		{
+			blending = true;
+			blendTimer = 0.0f;
+		}
 	}
 }
+
+void Animator::DrawBlended(const Vector2 position, const float scale)
+{
+	const Animation& animPrev = animations[previousState];
+	const Animation& animCurr = animations[currentState];
+
+	const float blendFactor = blendTimer / blendDuration;
+
+	// Calculate current frame for both animations
+	const int framePrev = previousFrame + static_cast<int>(static_cast<float>(currentFrame - previousFrame) * blendFactor);
+	const int frameCurr = currentFrame;
+
+	// Draw previous animation frame
+	DoDrawTexture(animPrev, position, scale, 1.0f - blendFactor);
+
+	// Draw current animation frame
+	DoDrawTexture(animCurr, position, scale, blendFactor);
+}
+
+void Animator::DoUpdate(const float deltaTime)
+{
+	const Animation& anim = animations[currentState];
+
+	// Update timer, wrapping around using std::fmod precision
+	timer = std::fmod(timer + deltaTime * std::abs(anim.speedFactor), anim.frameTime);
+
+	// Determine if we need to change the current frame based on the timer
+	if (timer < deltaTime * std::abs(anim.speedFactor))
+	{
+		// Adjust current frame based on the direction of the animation
+		currentFrame += (anim.speedFactor > 0) ? 1 : -1;
+
+		// Handle animation looping or resetting to the first frame
+		if (currentFrame >= anim.frameCount || currentFrame < 0)
+		{
+			if (anim.loop)
+			{
+				currentFrame = GetFirstFrame();
+			}
+			else
+			{
+				currentFrame = GetLastFrame();
+
+				// Check for automatic transitions
+				if (const auto it = transitions.find(currentState); it != transitions.end())
+				{
+					for (const auto& [targetState, transition] : it->second)
+					{
+						if (transition.automatic && transition.conditions.empty())
+						{
+							ChangeState(targetState);
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		// Check if any triggers should be fired
+		CheckTriggers();
+	}
+}
+
+void Animator::DoBlending(const float deltaTime)
+{
+	blendTimer += deltaTime;
+	if (blendTimer >= blendDuration)
+	{
+		blending = false;
+		currentFrame = GetFirstFrame();
+		timer = 0.0f;
+		CheckTriggers();
+	}
+}
+
+void Animator::DoDrawTexture(const Animation& anim, const Vector2 position, const float scale, const float blendFactor) const
+{
+	const Rectangle source = { static_cast<float>(currentFrame * anim.frameWidth), 0,static_cast<float>(anim.frameWidth), static_cast<float>(anim.frameHeight) };
+	const Rectangle dest = { position.x, position.y, static_cast<float>(anim.frameWidth) * scale, static_cast<float>(anim.frameHeight) * scale };
+	const Color tint = Fade(WHITE, blendFactor);
+	const auto origin = Vector2{ dest.width * anim.origin.x, dest.height * anim.origin.y };
+	DrawTexturePro(anim.spriteSheet, source, dest, origin, 0.0f, tint);
+}
+
+int Animator::GetFirstFrame()
+{
+	const Animation& anim = animations[currentState];
+	if (anim.speedFactor > 0)
+	{
+		return 0;
+	}
+	return anim.frameCount - 1;
+}
+
+int Animator::GetLastFrame()
+{
+	const Animation& anim = animations[currentState];
+	if (anim.speedFactor > 0)
+	{
+		return anim.frameCount - 1;
+	}
+	return 0;
+}
+
+#pragma endregion

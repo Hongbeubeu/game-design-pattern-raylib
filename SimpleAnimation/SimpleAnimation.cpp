@@ -39,57 +39,27 @@ int main()
 		// Simulate changing states
 		if (IsKeyPressed(KEY_Q))
 		{
-			animator.SetBool("is_idling", true);
-			animator.SetBool("is_attacking", false);
-			animator.SetBool("is_dead", false);
-			animator.SetBool("is_reacting", false);
-			animator.SetBool("is_hitting", false);
-			animator.SetBool("is_walking", false);
+			animator.SetTrigger("is_idling");
 		}
 		else if (IsKeyPressed(KEY_W))
 		{
-			animator.SetBool("is_idling", false);
-			animator.SetBool("is_attacking", true);
-			animator.SetBool("is_dead", false);
-			animator.SetBool("is_reacting", false);
-			animator.SetBool("is_hitting", false);
-			animator.SetBool("is_walking", false);
+			animator.SetTrigger("is_attacking");
 		}
 		else if (IsKeyPressed(KEY_E))
 		{
-			animator.SetBool("is_idling", false);
-			animator.SetBool("is_attacking", false);
-			animator.SetBool("is_dead", true);
-			animator.SetBool("is_reacting", false);
-			animator.SetBool("is_hitting", false);
-			animator.SetBool("is_walking", false);
+			animator.SetTrigger("is_dying");
 		}
 		else if (IsKeyPressed(KEY_R))
 		{
-			animator.SetBool("is_idling", false);
-			animator.SetBool("is_attacking", false);
-			animator.SetBool("is_dead", false);
-			animator.SetBool("is_reacting", true);
-			animator.SetBool("is_hitting", false);
-			animator.SetBool("is_walking", false);
+			animator.SetTrigger("is_reacting");
 		}
 		else if (IsKeyPressed(KEY_T))
 		{
-			animator.SetBool("is_idling", false);
-			animator.SetBool("is_attacking", false);
-			animator.SetBool("is_dead", false);
-			animator.SetBool("is_reacting", false);
-			animator.SetBool("is_hitting", true);
-			animator.SetBool("is_walking", false);
+			animator.SetTrigger("is_hitting");
 		}
 		else if (IsKeyPressed(KEY_Y))
 		{
-			animator.SetBool("is_idling", false);
-			animator.SetBool("is_attacking", false);
-			animator.SetBool("is_dead", false);
-			animator.SetBool("is_reacting", false);
-			animator.SetBool("is_hitting", false);
-			animator.SetBool("is_walking", true);
+			animator.SetTrigger("is_walking");
 		}
 
 		animator.Update(deltaTime);

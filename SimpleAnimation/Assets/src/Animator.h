@@ -57,14 +57,16 @@ struct Transition
 	std::string targetState;
 	float blendDuration;
 	std::vector<Condition> conditions;
+	bool automatic; // 
 };
 
 class Animator
 {
 public:
-	void LoadAnimations(const std::string& configFile);
-	void UnloadAnimations() const;
+	static unsigned long long GetHash(const std::string& str);
 
+	void LoadAnimations(const std::string& animationDataPath);
+	void UnloadAnimations() const;
 	void Update(float deltaTime);
 	void Draw(Vector2 position, float scale);
 	void RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback);
@@ -92,7 +94,6 @@ private:
 	void CheckTriggers();
 	bool CheckConditions(const std::vector<Condition>& conditions);
 	void ChangeState(const std::string& newState);
-
 	void DrawBlended(Vector2 position, float scale);
 	void DoUpdate(float deltaTime);
 	void DoBlending(float deltaTime);
