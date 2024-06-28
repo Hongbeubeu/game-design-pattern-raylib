@@ -1,6 +1,7 @@
 #include "Animator.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 void Animator::LoadAnimations(const std::string& configFile)
 {
@@ -153,44 +154,43 @@ int Animator::GetFirstFrame()
 	return anim.frameCount - 1;
 }
 
+int Animator::GetLastFrame()
+{
+	const Animation& anim = animations[currentState];
+	if (anim.speedFactor > 0)
+	{
+		return anim.frameCount - 1;
+	}
+	return 0;
+}
+
 void Animator::DoUpdate(const float deltaTime)
 {
 	const Animation& anim = animations[currentState];
 
-	timer += deltaTime * abs(anim.speedFactor);
-	if (timer >= anim.frameTime)
+	// Update timer, wrapping around using std::fmod precision
+	timer = std::fmod(timer + deltaTime * std::abs(anim.speedFactor), anim.frameTime);
+
+	// Determine if we need to change the current frame based on the timer
+	if (timer < deltaTime * std::abs(anim.speedFactor))
 	{
-		timer = 0.0f;
-		if (anim.speedFactor > 0)
+		// Adjust current frame based on the direction of the animation
+		currentFrame += (anim.speedFactor > 0) ? 1 : -1;
+
+		// Handle animation looping or resetting to the first frame
+		if (currentFrame >= anim.frameCount || currentFrame < 0)
 		{
-			currentFrame++;
-			if (currentFrame >= anim.frameCount)
+			if (anim.loop)
 			{
-				if (anim.loop)
-				{
-					currentFrame = 0;
-				}
-				else
-				{
-					currentFrame = anim.frameCount - 1;
-				}
+				currentFrame = GetFirstFrame();
+			}
+			else
+			{
+				currentFrame = GetLastFrame();
 			}
 		}
-		else
-		{
-			currentFrame--;
-			if (currentFrame < 0)
-			{
-				if (anim.loop)
-				{
-					currentFrame = anim.frameCount - 1;
-				}
-				else
-				{
-					currentFrame = 0;
-				}
-			}
-		}
+
+		// Check if any triggers should be fired
 		CheckTriggers();
 	}
 }

@@ -98,4 +98,5 @@ private:
 	void DoBlending(float deltaTime);
 	void DoDrawTexture(const Animation& anim,Vector2 position, float scale, float blendFactor) const;
 	int GetFirstFrame();
+	int GetLastFrame();
 };
