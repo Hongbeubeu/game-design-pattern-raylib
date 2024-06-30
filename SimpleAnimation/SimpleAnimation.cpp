@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Animator.h"
 #include "raylib.h"
+#include "AnimatorDataAsset.h"
 
 int main()
 {
-	// Initialization
 	constexpr int screenWidth = 800;
 	constexpr int screenHeight = 450;
 
@@ -15,9 +15,8 @@ int main()
 	// Set the loaded image as the window icon
 	SetWindowIcon(icon);
 
-
 	Animator animator;
-	animator.LoadAnimations("Assets/resources/datas/animation.json");
+	animator.Load("Assets/resources/datas/animation.json");
 
 	// Register trigger callbacks
 	animator.RegisterTriggerCallback("play_sound", []()
@@ -62,6 +61,15 @@ int main()
 			animator.SetTrigger("is_walking");
 		}
 
+		if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))
+		{
+			animator.SetFloat("is_walking", 1);
+		}
+		else
+		{
+			animator.SetFloat("is_walking", 0);
+		}
+
 		animator.Update(deltaTime);
 
 		BeginDrawing();
@@ -70,7 +78,7 @@ int main()
 		animator.Draw(Vector2{ screenWidth / 2.0f, screenHeight / 2.0f }, 5.0f);
 		EndDrawing();
 	}
-	animator.UnloadAnimations();
+	animator.Unload();
 	CloseWindow();
 
 	return 0;

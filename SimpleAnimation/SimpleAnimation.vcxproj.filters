@@ -67,13 +67,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\src\json.hpp">
+    <ClInclude Include="Assets\includes\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\src\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\src\AnimatorDataAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

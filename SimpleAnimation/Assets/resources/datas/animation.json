@@ -1,85 +1,103 @@
 {
   "animations": {
     "attack": {
-      "frame_time": 0.1,
-      "frame_count": 18,
-      "sprite_sheet": "Assets/resources/spritesheets/attack.png",
-      "default": false,
+      "frameTime": 0.1,
+      "frameCount": 18,
+      "spriteSheet": "Assets/resources/spritesheets/attack.png",
+      "isDefault": false,
       "origin": {
         "x": 0.28,
         "y": 1
       },
       "loop": false,
-      "speed_factor": 1.0,
+      "speedFactor": 1.0,
       "triggers": {
         "10": [ "play_sound", "deal_damage" ]
       }
     },
     "dead": {
-      "frame_time": 0.1,
-      "frame_count": 15,
-      "sprite_sheet": "Assets/resources/spritesheets/dead.png",
-      "default": false,
+      "frameTime": 0.1,
+      "frameCount": 15,
+      "spriteSheet": "Assets/resources/spritesheets/dead.png",
+      "isDefault": false,
       "origin": {
         "x": 0.6,
         "y": 1
       },
-      "loop": true,
-      "speed_factor": -2.0
+      "loop": false,
+      "speedFactor": 1.0,
+      "triggers": {}
+    },
+    "respawn": {
+      "frameTime": 0.1,
+      "frameCount": 15,
+      "spriteSheet": "Assets/resources/spritesheets/dead.png",
+      "isDefault": false,
+      "origin": {
+        "x": 0.6,
+        "y": 1
+      },
+      "loop": false,
+      "speedFactor": -1.0,
+      "triggers": {}
     },
     "hit": {
-      "frame_time": 0.1,
-      "frame_count": 8,
-      "sprite_sheet": "Assets/resources/spritesheets/hit.png",
-      "default": false,
+      "frameTime": 0.1,
+      "frameCount": 8,
+      "spriteSheet": "Assets/resources/spritesheets/hit.png",
+      "isDefault": false,
       "origin": {
         "x": 0.5,
         "y": 1
       },
       "loop": false,
-      "speed_factor": 1.0
+      "speedFactor": 1.0,
+      "triggers": {}
     },
     "idle": {
-      "frame_time": 0.1,
-      "frame_count": 11,
-      "sprite_sheet": "Assets/resources/spritesheets/idle.png",
-      "default": true,
+      "frameTime": 0.1,
+      "frameCount": 11,
+      "spriteSheet": "Assets/resources/spritesheets/idle.png",
+      "isDefault": true,
       "origin": {
         "x": 0.38,
         "y": 1
       },
       "loop": true,
-      "speed_factor": 1.0
+      "speedFactor": 1.0,
+      "triggers": {}
     },
     "react": {
-      "frame_time": 0.1,
-      "frame_count": 4,
-      "sprite_sheet": "Assets/resources/spritesheets/react.png",
-      "default": false,
+      "frameTime": 0.1,
+      "frameCount": 4,
+      "spriteSheet": "Assets/resources/spritesheets/react.png",
+      "isDefault": false,
       "origin": {
         "x": 0.41,
         "y": 1
       },
       "loop": true,
-      "speed_factor": 1.0
+      "speedFactor": 1.0,
+      "triggers": {}
     },
     "walk": {
-      "frame_time": 0.1,
-      "frame_count": 13,
-      "sprite_sheet": "Assets/resources/spritesheets/walk.png",
-      "default": false,
+      "frameTime": 0.1,
+      "frameCount": 13,
+      "spriteSheet": "Assets/resources/spritesheets/walk.png",
+      "isDefault": false,
       "origin": {
         "x": 0.4,
         "y": 1
       },
       "loop": true,
-      "speed_factor": -1.0
+      "speedFactor": 1.0,
+      "triggers": {}
     }
   },
   "transitions": {
     "idle": {
       "attack": {
-        "blend_duration": 0.2,
+        "blendDuration": 0,
         "conditions": [
           {
             "parameter": "is_attacking",
@@ -91,7 +109,7 @@
         "automatic": false
       },
       "dead": {
-        "blend_duration": 0.2,
+        "blendDuration": 0.2,
         "conditions": [
           {
             "parameter": "is_dying",
@@ -103,7 +121,7 @@
         "automatic": false
       },
       "hit": {
-        "blend_duration": 0.2,
+        "blendDuration": 0.2,
         "conditions": [
           {
             "parameter": "is_hitting",
@@ -115,7 +133,7 @@
         "automatic": false
       },
       "react": {
-        "blend_duration": 0.2,
+        "blendDuration": 0.2,
         "conditions": [
           {
             "parameter": "is_reacting",
@@ -127,13 +145,13 @@
         "automatic": false
       },
       "walk": {
-        "blend_duration": 0.2,
+        "blendDuration": 0,
         "conditions": [
           {
             "parameter": "is_walking",
-            "type": "trigger",
-            "comparison": "equal",
-            "value": true
+            "type": "float",
+            "comparison": "greater",
+            "value": 0
           }
         ],
         "automatic": false
@@ -141,35 +159,35 @@
     },
     "attack": {
       "idle": {
-        "blend_duration": 0,
+        "blendDuration": 0,
         "conditions": [],
         "automatic": true
       }
     },
     "dead": {
+      "respawn": {
+        "blendDuration": 0,
+        "conditions": [],
+        "automatic": true
+      }
+    },
+    "respawn": {
       "idle": {
-        "blend_duration": 0.2,
-        "conditions": [
-          {
-            "parameter": "is_idling",
-            "type": "trigger",
-            "comparison": "equal",
-            "value": true
-          }
-        ],
-        "automatic": false
+        "blendDuration": 0,
+        "conditions": [],
+        "automatic": true
       }
     },
     "hit": {
       "idle": {
-        "blend_duration": 0.2,
+        "blendDuration": 0.2,
         "conditions": [],
         "automatic": true
       }
     },
     "react": {
       "idle": {
-        "blend_duration": 0.2,
+        "blendDuration": 0.2,
         "conditions": [
           {
             "parameter": "is_idling",
@@ -183,13 +201,13 @@
     },
     "walk": {
       "idle": {
-        "blend_duration": 0.2,
+        "blendDuration": 0,
         "conditions": [
           {
-            "parameter": "is_idling",
-            "type": "trigger",
-            "comparison": "equal",
-            "value": true
+            "parameter": "is_walking",
+            "type": "float",
+            "comparison": "less_equal",
+            "value": 0
           }
         ],
         "automatic": false

@@ -1,7 +1,7 @@
 #include "Animator.h"
 #include <iostream>
-#include <fstream>
 #include <cmath>
+#include "AnimatorDataAsset.h"
 
 #pragma region Public Methods
 
@@ -11,98 +11,24 @@ unsigned long long Animator::GetHash(const std::string& str)
 	return hasher(str);
 }
 
-void Animator::LoadAnimations(const std::string& animationDataPath)
+void Animator::Load(const std::string& dataPath)
 {
-	std::ifstream file(animationDataPath);
-	if (file.is_open())
+	auto data = AnimatorDataAssetLoader::Load(dataPath);
+	for (auto& [key, value] : data.animations)
 	{
-		nlohmann::json jsonData;
-		file >> jsonData;
-
-		for (auto& item : jsonData["animations"].items())
-		{
-			auto& key = item.key();
-			auto& value = item.value();
-			Animation anim;
-			anim.frameCount = value["frame_count"];
-			anim.spriteSheet = LoadTexture(value["sprite_sheet"].get<std::string>().c_str());
-			anim.frameTime = value["frame_time"];
-			anim.frameWidth = anim.spriteSheet.width / anim.frameCount;
-			anim.frameHeight = anim.spriteSheet.height;
-			anim.origin = Vector2{
-				value["origin"]["x"],
-				value["origin"]["y"]
-			};
-			anim.loop = value["loop"];
-			anim.speedFactor = value["speed_factor"];
-
-			if (value["default"])
-			{
-				currentState = key;
-			}
-
-			if (value.contains("triggers"))
-			{
-				for (auto& triggerItems : value["triggers"].items())
-				{
-					auto& frame = triggerItems.key();
-					const auto& triggers = triggerItems.value().get<std::vector<std::string>>();
-					anim.triggers[std::stoi(frame)] = triggers;
-				}
-			}
-
-			animations[key] = anim;
-		}
-
-		for (auto& transitionItems : jsonData["transitions"].items())
-		{
-			auto& key = transitionItems.key();
-			auto& value = transitionItems.value();
-
-			std::map<std::string, Transition> transitionMap;
-
-			for (auto& transitionItem : value.items())
-			{
-				Transition transition;
-				transition.targetState = transitionItem.key();
-				transition.blendDuration = transitionItem.value()["blend_duration"];
-				for (auto& conditionData : transitionItem.value()["conditions"])
-				{
-					Condition condition;
-					condition.parameterName = conditionData["parameter"];
-					std::string type = conditionData["type"];
-					if (type == "bool") condition.type = CONDITION_BOOL;
-					else if (type == "float") condition.type = CONDITION_FLOAT;
-					else if (type == "int") condition.type = CONDITION_INT;
-					else if (type == "trigger") condition.type = CONDITION_TRIGGER;
-
-					std::string comparison = conditionData["comparison"];
-					if (comparison == "equal") condition.comparison = COMPARE_EQUAL;
-					else if (comparison == "not_equal") condition.comparison = COMPARE_NOT_EQUAL;
-					else if (comparison == "greater") condition.comparison = COMPARE_GREATER;
-					else if (comparison == "less") condition.comparison = COMPARE_LESS;
-					else if (comparison == "greater_equal") condition.comparison = COMPARE_GREATER_EQUAL;
-					else if (comparison == "less_equal") condition.comparison = COMPARE_LESS_EQUAL;
-
-					if (condition.type == CONDITION_BOOL) condition.boolValue = conditionData["value"];
-					else if (condition.type == CONDITION_FLOAT) condition.floatValue = conditionData["value"];
-					else if (condition.type == CONDITION_INT) condition.intValue = conditionData["value"];
-
-					transition.conditions.push_back(condition);
-				}
-				transition.automatic = transitionItem.value()["automatic"];
-				transitionMap[transition.targetState] = transition;
-			}
-			transitions[key] = transitionMap;
-		}
+		LoadAnimation(key, value);
 	}
-	else
+
+	for (auto& [fromAnimationKey, value] : data.transitions)
 	{
-		std::cerr << "Failed to open file: " << animationDataPath << '\n';
+		for (auto& [toAnimationKey, transitionData] : value)
+		{
+			LoadTransition(fromAnimationKey, toAnimationKey, transitionData);
+		}
 	}
 }
 
-void Animator::UnloadAnimations() const
+void Animator::Unload() const
 {
 	for (const auto& item : animations)
 	{
@@ -122,17 +48,17 @@ void Animator::Update(const float deltaTime)
 	}
 
 	// Check if any transitions should occur based on conditions
-	for (const auto& transition : transitions[currentState])
+	for (const auto& [animationKey, transition] : transitions[currentState])
 	{
 		// Skip automatic transitions without conditions
-		if (transition.second.automatic && transition.second.conditions.empty())
+		if (transition.automatic && transition.conditions.empty())
 		{
 			continue;
 		}
-		if (CheckConditions(transition.second.conditions))
+		if (CheckConditions(transition.conditions))
 		{
-			ChangeState(transition.first);
-			for (const auto& condition : transition.second.conditions)
+			ChangeState(animationKey);
+			for (const auto& condition : transition.conditions)
 			{
 				if (condition.type == CONDITION_TRIGGER)
 				{
@@ -190,6 +116,78 @@ void Animator::ResetTrigger(const std::string& parameter)
 #pragma endregion
 
 #pragma region Private Methods
+void Animator::LoadAnimation(const std::string& animationKey, const AnimationData& animationData)
+{
+	Animation anim;
+	anim.frameTime = animationData.frameTime;
+	anim.frameCount = animationData.frameCount;
+	anim.spriteSheet = LoadTexture(animationData.spriteSheet.c_str());
+	anim.frameWidth = anim.spriteSheet.width / anim.frameCount;
+	anim.frameHeight = anim.spriteSheet.height;
+	anim.origin = Vector2{ animationData.origin.x, animationData.origin.y };
+	anim.loop = animationData.loop;
+	anim.speedFactor = animationData.speedFactor;
+
+	if (animationData.isDefault)
+	{
+		currentState = animationKey;
+	}
+
+	if (!animationData.triggers.empty())
+	{
+		for (const auto& [fst, snd] : animationData.triggers)
+		{
+			auto& frame = fst;
+			const auto& trigger = snd;
+			anim.triggers[std::stoi(frame)] = trigger;
+		}
+	}
+
+	animations[animationKey] = anim;
+}
+
+void Animator::LoadTransition(const std::string& fromAnimationKey, const std::string& toAnimationKey, const TransitionData& transitionData)
+{
+	std::map<std::string, Transition> transitionMap;
+	if (transitions.find(fromAnimationKey) != transitions.end())
+	{
+		transitionMap = transitions[fromAnimationKey];
+	}
+
+	Transition transition;
+	transition.targetState = toAnimationKey;
+	transition.blendDuration = transitionData.blendDuration;
+	for (auto& conditionData : transitionData.conditions)
+	{
+		Condition condition;
+		condition.parameterName = conditionData.parameter;
+
+		std::string type = conditionData.type;
+		if (type == "bool") condition.type = CONDITION_BOOL;
+		else if (type == "float") condition.type = CONDITION_FLOAT;
+		else if (type == "int") condition.type = CONDITION_INT;
+		else if (type == "trigger") condition.type = CONDITION_TRIGGER;
+
+		std::string comparison = conditionData.comparison;
+		if (comparison == "equal") condition.comparison = COMPARE_EQUAL;
+		else if (comparison == "not_equal") condition.comparison = COMPARE_NOT_EQUAL;
+		else if (comparison == "greater") condition.comparison = COMPARE_GREATER;
+		else if (comparison == "less") condition.comparison = COMPARE_LESS;
+		else if (comparison == "greater_equal") condition.comparison = COMPARE_GREATER_EQUAL;
+		else if (comparison == "less_equal") condition.comparison = COMPARE_LESS_EQUAL;
+
+		if (condition.type == CONDITION_BOOL) condition.boolValue = conditionData.value;
+		else if (condition.type == CONDITION_FLOAT) condition.floatValue = conditionData.value;
+		else if (condition.type == CONDITION_INT) condition.intValue = conditionData.value;
+
+		transition.conditions.push_back(condition);
+	}
+	transition.automatic = transitionData.automatic;
+	transitionMap[transition.targetState] = transition;
+
+	transitions[fromAnimationKey] = transitionMap;
+}
+
 void Animator::CheckTriggers()
 {
 	Animation& anim = animations[currentState];
@@ -261,7 +259,7 @@ void Animator::ChangeState(const std::string& newState)
 {
 	if (currentState != newState && transitions[currentState].find(newState) != transitions[currentState].end())
 	{
-		auto timeToEndAnim = animations[currentState].frameTime *static_cast<float>(animations[currentState].frameCount) - static_cast<float>(currentFrame) * animations[currentState].frameTime;
+		auto timeToEndAnim = animations[currentState].frameTime * static_cast<float>(animations[currentState].frameCount) - static_cast<float>(currentFrame) * animations[currentState].frameTime;
 		previousState = currentState;
 		currentState = newState;
 		blendDuration = transitions[previousState][newState].blendDuration >= timeToEndAnim ? timeToEndAnim : transitions[previousState][newState].blendDuration;

@@ -4,20 +4,22 @@
 #include <variant>
 #include <functional>
 
+#include "AnimatorDataAsset.h"
+
 using json = nlohmann::json;
 
 // Strut to hold the animation data
 struct Animation
 {
+	float frameTime; // Time each frame is displayed
 	int frameCount;
 	Texture2D spriteSheet;
-	int frameWidth;
-	int frameHeight;
 	Vector2 origin;
-	float frameTime; // Time each frame is displayed
 	bool loop; // Whether the animation loops
 	float speedFactor; // Speed multiplier
 	std::map<int, std::vector<std::string>> triggers; // Map of frame index to trigger action
+	int frameWidth;
+	int frameHeight;
 };
 
 
@@ -44,7 +46,7 @@ struct Condition
 	std::string parameterName;
 	ConditionType type;
 	ComparisonType comparison;
-	union 
+	union
 	{
 		bool boolValue;
 		float floatValue;
@@ -65,8 +67,8 @@ class Animator
 public:
 	static unsigned long long GetHash(const std::string& str);
 
-	void LoadAnimations(const std::string& animationDataPath);
-	void UnloadAnimations() const;
+	void Load(const std::string& dataPath);
+	void Unload() const;
 	void Update(float deltaTime);
 	void Draw(Vector2 position, float scale);
 	void RegisterTriggerCallback(const std::string& trigger, const std::function<void()>& callback);
@@ -91,13 +93,16 @@ private:
 	float blendDuration = 0;
 	bool blending = false;
 
+
+	void LoadAnimation(const std::string& animationKey, const AnimationData& animationData);
+	void LoadTransition(const std::string& fromAnimationKey, const std::string& toAnimationKey, const TransitionData& transitionData);
 	void CheckTriggers();
 	bool CheckConditions(const std::vector<Condition>& conditions);
 	void ChangeState(const std::string& newState);
 	void DrawBlended(Vector2 position, float scale);
 	void DoUpdate(float deltaTime);
 	void DoBlending(float deltaTime);
-	void DoDrawTexture(const Animation& anim,Vector2 position, float scale, float blendFactor) const;
+	void DoDrawTexture(const Animation& anim, Vector2 position, float scale, float blendFactor) const;
 	int GetFirstFrame();
 	int GetLastFrame();
 };
