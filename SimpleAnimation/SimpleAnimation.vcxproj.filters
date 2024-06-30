@@ -79,6 +79,9 @@
     <ClInclude Include="Assets\src\AnimatorDataAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\includes\raygui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\resources\datas\animation.json" />

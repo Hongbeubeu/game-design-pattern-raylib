@@ -1,6 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "Animator.h"
 #include "raylib.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 #include "AnimatorDataAsset.h"
 
 int main()
@@ -30,6 +34,8 @@ int main()
 		});
 
 	SetTargetFPS(60);
+
+	bool showMessageBox = false;
 
 	while (!WindowShouldClose())
 	{
@@ -70,6 +76,16 @@ int main()
 			animator.SetFloat("is_walking", 0);
 		}
 
+		if (GuiButton(Rectangle{ 24, 24, 120, 30 }, "#191#Show Message"))
+			showMessageBox = true;
+
+		if (showMessageBox)
+		{
+			int result = GuiMessageBox(Rectangle{ 85, 70, 250, 100 }, "#191#Message Box", "Hi! This is message!", "Nice;Cool");
+
+			if (result >= 0)
+				showMessageBox = false;
+		}
 		animator.Update(deltaTime);
 
 		BeginDrawing();

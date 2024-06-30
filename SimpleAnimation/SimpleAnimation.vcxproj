@@ -162,6 +162,7 @@
     <Image Include="Assets\resources\spritesheets\walk.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\includes\raygui.h" />
     <ClInclude Include="Assets\src\Animator.h" />
     <ClInclude Include="Assets\includes\json.hpp" />
     <ClInclude Include="Assets\src\AnimatorDataAsset.h" />

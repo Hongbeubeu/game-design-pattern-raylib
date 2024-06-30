@@ -1,5 +1,4 @@
 #include "Animator.h"
-#include <iostream>
 #include <cmath>
 #include "AnimatorDataAsset.h"
 
@@ -13,7 +12,7 @@ unsigned long long Animator::GetHash(const std::string& str)
 
 void Animator::Load(const std::string& dataPath)
 {
-	auto data = AnimatorDataAssetLoader::Load(dataPath);
+	const auto data = AnimatorDataAssetLoader::Load(dataPath);
 	for (auto& [key, value] : data.animations)
 	{
 		LoadAnimation(key, value);
